@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  qin_ser_qin_sunset:
+    tty: true
+    stdin_open: true
+    container_name: qin_con_qin_sunset
+    image: pointeldevs/stk_java
+    volumes:
+      - ${QIN_ROOT}/Work:/root
+      - ${QIN_ROOT}/Arch:/root/Arch
+      - ${QIN_ROOT}/Code:/root/Code
+      - ${QIN_ROOT}/Pool:/root/Pool
+      - ${QIN_ROOT}/Prod:/root/Prod
+      - ${QIN_ROOT}/Test:/root/Test
+      - ..:/workspaces/qin_sunset
+    environment:
+      - QIN_ROOT=/root
+    networks:
+      - qin_net_dev
+
+networks:
+  qin_net_dev:
+    external: true
