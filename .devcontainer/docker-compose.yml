@@ -19,5 +19,5 @@ services:
       - qin_net_stk
 
 networks:
-  qin_net_dev:
+  qin_net_stk:
     external: true
