@@ -1,9 +1,9 @@
 version: "3.9"
 services:
-  qdevs_ser_qin_sunset:
+  qcode_ser_qin_sunset:
     tty: true
     stdin_open: true
-    container_name: qdevs_con_qin_sunset
+    container_name: qcode_con_qin_sunset
     image: pointeldevs/stk_java
     volumes:
       - ${QIN_ROOT}/Work:/root
@@ -12,11 +12,11 @@ services:
       - ${QIN_ROOT}/Pool:/root/Pool
       - ${QIN_ROOT}/Prod:/root/Prod
       - ${QIN_ROOT}/Test:/root/Test
-      - ..:/workspaces/qin_sunset
     environment:
       - QIN_ROOT=/root
     networks:
       - qin_net_stk
+    working_dir: /root/Code/qin_sunset
 
 networks:
   qin_net_stk:
