@@ -15,6 +15,7 @@ services:
       - 5488
     networks:
       - qin_net_run
+    restart: always
     working_dir: /root/Prod
     command: ./start.sh
 

@@ -14,10 +14,10 @@ services:
     expose:
       - 5490
     networks:
-      - qin_net_run
+      - qin_net_stk
     working_dir: /root/Test
     command: ./start.sh
 
 networks:
-  qin_net_run:
+  qin_net_stk:
     external: true
