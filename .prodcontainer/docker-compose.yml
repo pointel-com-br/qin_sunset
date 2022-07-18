@@ -9,6 +9,10 @@ services:
       - ${QIN_ROOT}/Prod:/root/Prod
     environment:
       - QIN_ROOT=/root
+    ports:
+      - 5488:5488
+    expose:
+      - 5488
     networks:
       - qin_net_run
     working_dir: /root/Prod

@@ -1,0 +1,15 @@
+{
+  "serverVerbose": true,
+  "serverArchive": true,
+  "serverHost": "0.0.0.0",
+  "serverPort": 5490,
+  "servesPUB": true,
+  "servesAPP": true,
+  "servesDIR": true,
+  "servesCMD": true,
+  "servesBAS": true,
+  "servesREG": true,
+  "servesSQL": true,
+  "servesLIZ": true,
+  "servesGIZ": true
+}

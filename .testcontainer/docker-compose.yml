@@ -9,6 +9,10 @@ services:
       - ${QIN_ROOT}/Test:/root/Test
     environment:
       - QIN_ROOT=/root
+    ports:
+      - 5490:5490
+    expose:
+      - 5490
     networks:
       - qin_net_run
     working_dir: /root/Test
