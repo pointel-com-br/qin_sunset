@@ -7,9 +7,7 @@ services:
     image: pointeldevs/stk_java
     volumes:
       - ${QIN_ROOT}/Work:/root
-      - ${QIN_ROOT}/Arch:/root/Arch
       - ${QIN_ROOT}/Code:/root/Code
-      - ${QIN_ROOT}/Pool:/root/Pool
       - ${QIN_ROOT}/Prod:/root/Prod
       - ${QIN_ROOT}/Test:/root/Test
     environment:
