@@ -13,7 +13,7 @@
     {
       "label": "Test",
       "type": "shell",
-      "command": "ruby put-on-test.rb",
+      "command": "py put-on-test.py",
       "group": {
         "kind": "test",
         "isDefault": true
