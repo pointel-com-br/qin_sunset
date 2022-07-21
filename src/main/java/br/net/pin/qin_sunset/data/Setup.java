@@ -43,7 +43,7 @@ public class Setup {
       this.serverArchive = false;
     }
     if (this.serverName == null || this.serverName.isEmpty()) {
-      this.serverName = "QinpelSrv";
+      this.serverName = "QinSunset";
     }
     if (this.serverLang == null || this.serverLang.isEmpty()) {
       this.serverLang = "en";

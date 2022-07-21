@@ -23,9 +23,9 @@ public class QinSunset {
     var command = new DefaultParser().parse(options, args);
     if (command.hasOption('?')) {
       System.out.println(
-          "QinpelSrv (Qinpel Server) is a library and a command program that servers public files, graphical user interfaces, file system access with authorization, command programs dispatchs, databases queries and scripts execution. It is the base of the Pointel platform and the backend of the Qinpel, the Quick Interface for Power Intelligence.");
+          "QinSunset is a command program that servers public files, graphical user interfaces, file system access with authorization, command programs dispatchers and monitoring, databases queries and scripts execution. It is the base of the Pointel platform and the backend of the Qinpel, the Quick Interface for Power Intelligence.");
       HelpFormatter formatter = new HelpFormatter();
-      formatter.printHelp("qinpel-srv", options);
+      formatter.printHelp("qin_sunset", options);
       return;
     }
     Setup setup;
