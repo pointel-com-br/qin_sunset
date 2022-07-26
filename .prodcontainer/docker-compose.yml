@@ -3,7 +3,7 @@ services:
   qprod_ser_qin_sunset:
     tty: true
     stdin_open: true
-    container_name: qprod_con_qin_sunset
+    container_name: qprod_qin_sunset
     image: pointeldevs/run_java
     volumes:
       - ${QIN_ROOT}/Prod:/root/Prod

@@ -3,7 +3,7 @@ services:
   qcode_ser_qin_sunset:
     tty: true
     stdin_open: true
-    container_name: qcode_con_qin_sunset
+    container_name: qcode_qin_sunset
     image: pointeldevs/stk_java
     volumes:
       - ${QIN_ROOT}/Work:/root

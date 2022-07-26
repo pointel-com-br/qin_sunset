@@ -3,7 +3,7 @@ services:
   qtest_ser_qin_sunset:
     tty: true
     stdin_open: true
-    container_name: qtest_con_qin_sunset
+    container_name: qtest_qin_sunset
     image: pointeldevs/run_java
     volumes:
       - ${QIN_ROOT}/Test:/root/Test
