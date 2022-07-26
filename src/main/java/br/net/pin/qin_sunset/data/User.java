@@ -3,7 +3,9 @@ package br.net.pin.qin_sunset.data;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
 
@@ -14,6 +16,7 @@ public class User {
   public String lang;
   public Boolean master;
   public List<Allow> access;
+  public Map<String, String> setup;
   public String group;
 
   public void fixDefaults() {
@@ -47,6 +50,9 @@ public class User {
     }
     for (var access : this.access) {
       access.fixDefaults();
+    }
+    if (this.setup == null) {
+      this.setup = new HashMap<>();
     }
     if (this.group == null) {
       this.group = "";
