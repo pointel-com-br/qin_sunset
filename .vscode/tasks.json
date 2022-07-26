@@ -13,7 +13,7 @@
     {
       "label": "Test",
       "type": "shell",
-      "command": "py put-test.py",
+      "command": "py put_test.py",
       "group": {
         "kind": "test",
         "isDefault": true
