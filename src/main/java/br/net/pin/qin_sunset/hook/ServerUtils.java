@@ -1,6 +1,7 @@
 package br.net.pin.qin_sunset.hook;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -66,7 +67,22 @@ public class ServerUtils {
   }
 
   private static void initParams(ServletContextHandler context) {
-
+    context.addServlet(new ServletHolder(new HttpServlet() {
+      @Override
+      protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+          throws ServletException, IOException {
+        var name = req.getPathInfo().substring(1);
+        if (name.isEmpty()) {
+          resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a parameter name");
+          return;
+        }
+        name = URLDecoder.decode(name, "UTF-8");
+        var way = Runner.getWay(req);
+        var authed = Runner.getAuthed(way, req);
+        resp.setContentType("text/plain");
+        resp.getWriter().print(OrdersUtils.askParams(way, authed, name));
+      }
+    }), "/param/*");
   }
 
   private static void initRedirects(ServletContextHandler context, Setup setup) {

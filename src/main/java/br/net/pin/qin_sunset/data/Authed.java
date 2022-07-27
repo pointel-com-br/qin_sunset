@@ -237,6 +237,16 @@ public class Authed {
     return false;
   }
 
+  public String getParam(String name) {
+    if (this.user.params.containsKey(name)) {
+      return this.user.params.get(name);
+    }
+    if (this.group != null && this.group.params.containsKey(name)) {
+      return this.group.params.get(name);
+    }
+    return null;
+  }
+
   public String newIssued(Issued issued) {
     return this.issuedMap.newIssued(issued);
   }

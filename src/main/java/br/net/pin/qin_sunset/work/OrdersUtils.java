@@ -1,9 +1,25 @@
 package br.net.pin.qin_sunset.work;
 
+import br.net.pin.qin_sunset.data.Authed;
 import br.net.pin.qin_sunset.data.Issued;
+import br.net.pin.qin_sunset.data.Way;
 import br.net.pin.qin_sunset.swap.AskIssued;
 
 public class OrdersUtils {
+  public static String askParams(Way way, Authed authed, String name) {
+    String result = null;
+    if (authed != null) {
+      result = authed.getParam(name);
+    }
+    if (result == null) {
+      result = way.air.setup.params.get(name);
+    }
+    if (result == null) {
+      result = "";
+    }
+    return result;
+  }
+
   public static String askIssued(Issued issued, AskIssued question) throws Exception {
     var results = new StringBuilder();
     if (question.askCreatedAt != null && question.askCreatedAt) {
