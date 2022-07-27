@@ -24,6 +24,7 @@ public class Setup {
   public Boolean servesLIZ;
   public Boolean servesGIZ;
 
+  public Map<String, String> params;
   public Map<String, String> redirects;
 
   public Integer threadsMin;
@@ -58,7 +59,6 @@ public class Setup {
       this.serverFolder = "";
     }
     this.serverFolder = new File(this.serverFolder).getAbsolutePath();
-
     if (this.servesPUB == null) {
       this.servesPUB = false;
     }
@@ -87,6 +87,9 @@ public class Setup {
       this.servesGIZ = false;
     }
 
+    if (this.params == null) {
+      this.params = new HashMap<>();
+    }
     if (this.redirects == null) {
       this.redirects = new HashMap<>();
     }

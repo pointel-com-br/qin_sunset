@@ -14,7 +14,7 @@ public class Group {
   public String lang;
   public Boolean master;
   public List<Allow> access;
-  public Map<String, String> setup;
+  public Map<String, String> params;
 
   public void fixDefaults() {
     if (this.name == null) {
@@ -39,8 +39,8 @@ public class Group {
     for (var access : this.access) {
       access.fixDefaults();
     }
-    if (this.setup == null) {
-      this.setup = new HashMap<>();
+    if (this.params == null) {
+      this.params = new HashMap<>();
     }
   }
 

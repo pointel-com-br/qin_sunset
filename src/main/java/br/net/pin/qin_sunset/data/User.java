@@ -16,7 +16,7 @@ public class User {
   public String lang;
   public Boolean master;
   public List<Allow> access;
-  public Map<String, String> setup;
+  public Map<String, String> params;
   public String group;
 
   public void fixDefaults() {
@@ -51,8 +51,8 @@ public class User {
     for (var access : this.access) {
       access.fixDefaults();
     }
-    if (this.setup == null) {
-      this.setup = new HashMap<>();
+    if (this.params == null) {
+      this.params = new HashMap<>();
     }
     if (this.group == null) {
       this.group = "";

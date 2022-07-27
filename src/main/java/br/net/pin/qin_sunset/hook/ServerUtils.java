@@ -20,8 +20,9 @@ public class ServerUtils {
     initPing(context);
     initLang(context);
     initLogged(context);
-    initIssued(context);
+    initParams(context);
     initRedirects(context, setup);
+    initIssued(context);
   }
 
   private static void initPing(ServletContextHandler context) {
@@ -64,6 +65,22 @@ public class ServerUtils {
     }), "/logged");
   }
 
+  private static void initParams(ServletContextHandler context) {
+
+  }
+
+  private static void initRedirects(ServletContextHandler context, Setup setup) {
+    for (var entry : setup.redirects.entrySet()) {
+      context.addServlet(new ServletHolder(new HttpServlet() {
+        @Override
+        protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+          resp.sendRedirect(entry.getValue());
+        }
+      }), entry.getKey());
+    }
+  }
+
   private static void initIssued(ServletContextHandler context) {
     context.addServlet(new ServletHolder(new HttpServlet() {
       @Override
@@ -97,17 +114,5 @@ public class ServerUtils {
         }
       }
     }), "/issued");
-  }
-
-  private static void initRedirects(ServletContextHandler context, Setup setup) {
-    for (var entry : setup.redirects.entrySet()) {
-      context.addServlet(new ServletHolder(new HttpServlet() {
-        @Override
-        protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-          resp.sendRedirect(entry.getValue());
-        }
-      }), entry.getKey());
-    }
   }
 }
