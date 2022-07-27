@@ -73,7 +73,7 @@ public class OrdersCMD {
       return Utils.listFolders(cmdsDir);
     }
     var result = new StringBuilder();
-    for (var access : forAuthed.getUserAccess()) {
+    for (var access : forAuthed.getAccess()) {
       if (access.cmd != null) {
         if (new File(cmdsDir, access.cmd.name).exists()) {
           result.append(access.cmd.name);

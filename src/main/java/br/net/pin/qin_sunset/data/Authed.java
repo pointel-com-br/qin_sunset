@@ -51,7 +51,7 @@ public class Authed {
     }
   }
 
-  public List<Allow> getUserAccess() {
+  public List<Allow> getAccess() {
     var result = new ArrayList<Allow>();
     if (this.group != null) {
       for (var group_allow : this.group.access) {
