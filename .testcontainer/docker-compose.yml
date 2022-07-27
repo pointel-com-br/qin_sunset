@@ -15,6 +15,7 @@ services:
       - 5490
     networks:
       - qin_net_stk
+    restart: always
     working_dir: /root/Test
     command: ./start.sh
 
