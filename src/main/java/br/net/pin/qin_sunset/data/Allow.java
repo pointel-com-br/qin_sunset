@@ -38,7 +38,6 @@ public class Allow {
   }
 
   public class REG {
-    public String base;
     public Registry registry;
     public Boolean all;
     public Boolean insert;
