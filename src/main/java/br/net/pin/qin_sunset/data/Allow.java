@@ -85,7 +85,7 @@ public class Allow {
       }
     }
     if (this.reg != null) {
-      if (this.reg.base == null || this.reg.base.isEmpty() || this.reg.registry == null) {
+      if (this.reg.registry == null) {
         this.reg = null;
       } else {
         this.reg.all = this.reg.all != null ? this.reg.all : false;
@@ -134,7 +134,7 @@ public class Allow {
       return Objects.equals(this.bas.name, than.bas.name);
     }
     if (this.reg != null && than.reg != null) {
-      return Objects.equals(this.reg.base, than.reg.base) && Objects.equals(this.reg.registry, than.reg.registry);
+      return Objects.equals(this.reg.registry, than.reg.registry);
     }
     if (this.sql != null && than.sql != null) {
       return Objects.equals(this.sql.base, than.sql.base) && Objects.equals(this.sql.path, than.sql.path);
