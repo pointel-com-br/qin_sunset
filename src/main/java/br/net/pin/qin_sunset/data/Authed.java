@@ -10,11 +10,28 @@ public class Authed {
   private final User user;
   private final Group group;
   private final IssuedMap issuedMap;
+  private final List<Allow> access;
 
   public Authed(User user, Group group) {
     this.user = user;
     this.group = group;
     this.issuedMap = new IssuedMap();
+    this.access = new ArrayList<>();
+    this.initAccess();
+  }
+
+  private void initAccess() {
+    if (this.group != null) {
+      for (var group_allow : this.group.access) {
+        this.access.add(group_allow);
+      }
+    }
+    if (this.user.access != null) {
+      for (var user_allow : this.user.access) {
+        this.access.removeIf(on_group -> on_group.isOnSameResource(user_allow));
+        this.access.add(user_allow);
+      }
+    }
   }
 
   public String getUserName() {
@@ -52,19 +69,7 @@ public class Authed {
   }
 
   public List<Allow> getAccess() {
-    var result = new ArrayList<Allow>();
-    if (this.group != null) {
-      for (var group_allow : this.group.access) {
-        result.add(group_allow);
-      }
-    }
-    if (this.user.access != null) {
-      for (var user_allow : this.user.access) {
-        result.removeIf(on_group -> on_group.isOnSameResource(user_allow));
-        result.add(user_allow);
-      }
-    }
-    return result;
+    return this.access;
   }
 
   public boolean allowAPP(String name) {
