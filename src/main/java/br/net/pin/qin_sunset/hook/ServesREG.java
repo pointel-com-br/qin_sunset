@@ -6,11 +6,14 @@ import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import com.google.gson.Gson;
+
 import br.net.pin.qin_sunset.work.OrdersREG;
 import br.net.pin.qin_sunset.work.Runner;
 import br.net.pin.qin_sunwiz.data.Deed;
 import br.net.pin.qin_sunwiz.data.Delete;
 import br.net.pin.qin_sunwiz.data.Insert;
+import br.net.pin.qin_sunwiz.data.Registry;
 import br.net.pin.qin_sunwiz.data.Select;
 import br.net.pin.qin_sunwiz.data.Update;
 import jakarta.servlet.ServletException;
@@ -20,10 +23,46 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class ServesREG {
   public static void init(ServletContextHandler context) {
+    initRegCan(context);
     initRegNew(context);
     initRegAsk(context);
     initRegSet(context);
     initRegDel(context);
+  }
+
+  private static void initRegCan(ServletContextHandler context) {
+    context.addServlet(new ServletHolder(new HttpServlet() {
+      @Override
+      protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+          throws ServletException, IOException {
+        var way = Runner.getWay(req);
+        var authed = Runner.getAuthed(way, req);
+        if (authed == null) {
+          resp.sendError(HttpServletResponse.SC_FORBIDDEN,
+              "You must be logged");
+          return;
+        }
+        var body = IOUtils.toString(req.getReader());
+        var registry = Registry.fromString(body);
+        if (registry == null) {
+          resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+              "You must provide a registry");
+          return;
+        }
+        if (registry.base == null || registry.base.isEmpty()) {
+          resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+              "You must provide a registry base");
+          return;
+        }
+        if (registry.name == null || registry.name.isEmpty()) {
+          resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+              "You must provide a registry name");
+          return;
+        }
+        resp.setContentType("application/json");
+        resp.getWriter().print(new Gson().toJson(OrdersREG.regCan(authed, registry)));
+      }
+    }), "/reg/can");
   }
 
   private static void initRegNew(ServletContextHandler context) {
@@ -34,7 +73,8 @@ public class ServesREG {
         var way = Runner.getWay(req);
         var authed = Runner.getAuthed(way, req);
         if (authed == null) {
-          resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
+          resp.sendError(HttpServletResponse.SC_FORBIDDEN,
+              "You must be logged");
           return;
         }
         var body = IOUtils.toString(req.getReader());
@@ -73,7 +113,8 @@ public class ServesREG {
         var way = Runner.getWay(req);
         var authed = Runner.getAuthed(way, req);
         if (authed == null) {
-          resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
+          resp.sendError(HttpServletResponse.SC_FORBIDDEN,
+              "You must be logged");
           return;
         }
         var body = IOUtils.toString(req.getReader());
@@ -112,7 +153,8 @@ public class ServesREG {
         var way = Runner.getWay(req);
         var authed = Runner.getAuthed(way, req);
         if (authed == null) {
-          resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
+          resp.sendError(HttpServletResponse.SC_FORBIDDEN,
+              "You must be logged");
           return;
         }
         var body = IOUtils.toString(req.getReader());
@@ -151,7 +193,8 @@ public class ServesREG {
         var way = Runner.getWay(req);
         var authed = Runner.getAuthed(way, req);
         if (authed == null) {
-          resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
+          resp.sendError(HttpServletResponse.SC_FORBIDDEN,
+              "You must be logged");
           return;
         }
         var body = IOUtils.toString(req.getReader());

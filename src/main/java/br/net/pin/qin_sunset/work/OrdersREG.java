@@ -1,10 +1,14 @@
 package br.net.pin.qin_sunset.work;
 
 import java.io.StringWriter;
+import java.util.Objects;
 
+import br.net.pin.qin_sunset.data.Allow;
+import br.net.pin.qin_sunset.data.Authed;
 import br.net.pin.qin_sunset.data.Way;
 import br.net.pin.qin_sunwiz.data.Delete;
 import br.net.pin.qin_sunwiz.data.Insert;
+import br.net.pin.qin_sunwiz.data.Registry;
 import br.net.pin.qin_sunwiz.data.Select;
 import br.net.pin.qin_sunwiz.data.Update;
 import br.net.pin.qin_sunwiz.flow.CSVMaker;
@@ -12,6 +16,65 @@ import br.net.pin.qin_sunwiz.flow.CSVWrite;
 import jakarta.servlet.ServletException;
 
 public class OrdersREG {
+
+  public static Allow.REG regCan(Authed authed, Registry registry) {
+    var result = new Allow.REG();
+    result.registry = registry;
+    if (authed.isMaster()) {
+      result.all = true;
+      result.insert = true;
+      result.select = true;
+      result.update = true;
+      result.delete = true;
+      return result;
+    }
+    result.all = false;
+    result.insert = false;
+    result.select = false;
+    result.update = false;
+    result.delete = false;
+    for (var allow : authed.getAccess()) {
+      if (allow.reg != null && allow.reg.registry != null) {
+        if (canAllowResource(allow.reg.registry, registry)) {
+          if (allow.reg.all != null) {
+            result.all = allow.reg.all;
+          }
+          if (allow.reg.insert != null) {
+            result.insert = allow.reg.insert;
+          }
+          if (allow.reg.select != null) {
+            result.select = allow.reg.select;
+          }
+          if (allow.reg.update != null) {
+            result.update = allow.reg.update;
+          }
+          if (allow.reg.delete != null) {
+            result.delete = allow.reg.delete;
+          }
+        }
+      }
+    }
+    return result;
+  }
+
+  private static boolean canAllowResource(Registry guarantor, Registry requester) {
+    if (Objects.equals(guarantor.name, requester.name)) {
+      if (checkWeighted(guarantor.base, requester.base) &&
+          checkWeighted(guarantor.catalog, requester.catalog) &&
+          checkWeighted(guarantor.schema, requester.schema)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static boolean checkWeighted(String strong, String weak) {
+    if (strong == null || strong.isEmpty()) {
+      return true;
+    }
+    return strong.equals(weak);
+  }
+
   public static String regNew(Way way, Insert insert) throws ServletException {
     try {
       way.logStep(insert);
