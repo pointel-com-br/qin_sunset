@@ -18,26 +18,26 @@ public class Allow {
   public LIZ liz;
   public GIZ giz;
 
-  public class APP {
+  public static class APP {
     public String name;
   }
 
-  public class DIR {
+  public static class DIR {
     public String path;
     public Boolean mutate;
   }
 
-  public class CMD {
+  public static class CMD {
     public String name;
     public List<String> args;
   }
 
-  public class BAS {
+  public static class BAS {
     public String name;
     public Boolean mutate;
   }
 
-  public class REG {
+  public static class REG {
     public Registry registry;
     public Boolean all;
     public Boolean insert;
@@ -46,16 +46,16 @@ public class Allow {
     public Boolean delete;
   }
 
-  public class SQL {
+  public static class SQL {
     public String base;
     public String path;
   }
 
-  public class LIZ {
+  public static class LIZ {
     public String path;
   }
 
-  public class GIZ {
+  public static class GIZ {
     public String base;
     public String path;
   }
