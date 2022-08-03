@@ -2,6 +2,7 @@ package br.net.pin.qin_sunset.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import br.net.pin.qin_sunwiz.data.Deed;
 import br.net.pin.qin_sunwiz.data.Registry;
@@ -179,59 +180,30 @@ public class Authed {
     if (!this.allowBAS(registry.base, deed.mutates)) {
       return false;
     }
-    for (var access : this.user.access) {
-      if (access.reg != null && access.reg.registry.equals(registry)) {
-        if (access.reg.all) {
-          return true;
-        }
-        switch (deed) {
-          case INSERT:
-            if (access.reg.insert) {
-              return true;
-            }
-            break;
-          case SELECT:
-            if (access.reg.select) {
-              return true;
-            }
-            break;
-          case UPDATE:
-            if (access.reg.update) {
-              return true;
-            }
-            break;
-          case DELETE:
-            if (access.reg.delete) {
-              return true;
-            }
-            break;
-        }
-      }
-    }
-    if (this.group != null) {
-      for (var access : this.group.access) {
-        if (access.reg != null && access.reg.registry.equals(registry)) {
-          if (access.reg.all) {
+    for (var allow : this.getAccess()) {
+      if (allow.reg != null && allow.reg.registry != null) {
+        if (canAllowResource(allow.reg.registry, registry)) {
+          if (allow.reg.all) {
             return true;
           }
           switch (deed) {
             case INSERT:
-              if (access.reg.insert) {
+              if (allow.reg.insert) {
                 return true;
               }
               break;
             case SELECT:
-              if (access.reg.select) {
+              if (allow.reg.select) {
                 return true;
               }
               break;
             case UPDATE:
-              if (access.reg.update) {
+              if (allow.reg.update) {
                 return true;
               }
               break;
             case DELETE:
-              if (access.reg.delete) {
+              if (allow.reg.delete) {
                 return true;
               }
               break;
@@ -240,6 +212,24 @@ public class Authed {
       }
     }
     return false;
+  }
+
+  public static boolean canAllowResource(Registry guarantor, Registry requester) {
+    if (Objects.equals(guarantor.name, requester.name)) {
+      if (checkWeighted(guarantor.base, requester.base) &&
+          checkWeighted(guarantor.catalog, requester.catalog) &&
+          checkWeighted(guarantor.schema, requester.schema)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static boolean checkWeighted(String strong, String weak) {
+    if (strong == null || strong.isEmpty()) {
+      return true;
+    }
+    return strong.equals(weak);
   }
 
   public String getParam(String name) {

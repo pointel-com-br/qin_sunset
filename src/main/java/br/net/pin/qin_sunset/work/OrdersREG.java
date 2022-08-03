@@ -1,7 +1,6 @@
 package br.net.pin.qin_sunset.work;
 
 import java.io.StringWriter;
-import java.util.Objects;
 
 import br.net.pin.qin_sunset.data.Allow;
 import br.net.pin.qin_sunset.data.Authed;
@@ -35,7 +34,7 @@ public class OrdersREG {
     result.delete = false;
     for (var allow : authed.getAccess()) {
       if (allow.reg != null && allow.reg.registry != null) {
-        if (canAllowResource(allow.reg.registry, registry)) {
+        if (Authed.canAllowResource(allow.reg.registry, registry)) {
           if (allow.reg.all != null) {
             result.all = allow.reg.all;
           }
@@ -55,24 +54,6 @@ public class OrdersREG {
       }
     }
     return result;
-  }
-
-  private static boolean canAllowResource(Registry guarantor, Registry requester) {
-    if (Objects.equals(guarantor.name, requester.name)) {
-      if (checkWeighted(guarantor.base, requester.base) &&
-          checkWeighted(guarantor.catalog, requester.catalog) &&
-          checkWeighted(guarantor.schema, requester.schema)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private static boolean checkWeighted(String strong, String weak) {
-    if (strong == null || strong.isEmpty()) {
-      return true;
-    }
-    return strong.equals(weak);
   }
 
   public static String regNew(Way way, Insert insert) throws ServletException {
