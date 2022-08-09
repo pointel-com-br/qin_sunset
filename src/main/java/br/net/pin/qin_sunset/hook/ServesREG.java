@@ -94,13 +94,14 @@ public class ServesREG {
               "You must provide a registry name");
           return;
         }
-        if (!authed.allowREG(insert.registry, Deed.INSERT)) {
+        var allowed = authed.allowREG(insert.registry, Deed.INSERT);
+        if (!allowed.head) {
           resp.sendError(HttpServletResponse.SC_FORBIDDEN,
               "You don't have access to deed this registry");
           return;
         }
         resp.setContentType("text/plain");
-        resp.getWriter().print(OrdersREG.regNew(way, insert));
+        resp.getWriter().print(OrdersREG.regNew(way, insert, allowed.tail));
       }
     }), "/reg/new");
   }
@@ -134,13 +135,14 @@ public class ServesREG {
               "You must provide a registry name");
           return;
         }
-        if (!authed.allowREG(select.registry, Deed.SELECT)) {
+        var allowed = authed.allowREG(select.registry, Deed.SELECT);
+        if (!allowed.head) {
           resp.sendError(HttpServletResponse.SC_FORBIDDEN,
               "You don't have access to deed this registry");
           return;
         }
         resp.setContentType("text/plain");
-        resp.getWriter().print(OrdersREG.regAsk(way, select));
+        resp.getWriter().print(OrdersREG.regAsk(way, select, allowed.tail));
       }
     }), "/reg/ask");
   }
@@ -174,13 +176,14 @@ public class ServesREG {
               "You must provide a registry name");
           return;
         }
-        if (!authed.allowREG(update.registry, Deed.UPDATE)) {
+        var allowed = authed.allowREG(update.registry, Deed.UPDATE);
+        if (!allowed.head) {
           resp.sendError(HttpServletResponse.SC_FORBIDDEN,
               "You don't have access to deed this registry");
           return;
         }
         resp.setContentType("text/plain");
-        resp.getWriter().print(OrdersREG.regSet(way, update));
+        resp.getWriter().print(OrdersREG.regSet(way, update, allowed.tail));
       }
     }), "/reg/set");
   }
@@ -214,13 +217,14 @@ public class ServesREG {
               "You must provide a registry name");
           return;
         }
-        if (!authed.allowREG(delete.registry, Deed.DELETE)) {
+        var allowed = authed.allowREG(delete.registry, Deed.DELETE);
+        if (!allowed.head) {
           resp.sendError(HttpServletResponse.SC_FORBIDDEN,
               "You don't have access to deed this registry");
           return;
         }
         resp.setContentType("text/plain");
-        resp.getWriter().print(OrdersREG.regDel(way, delete));
+        resp.getWriter().print(OrdersREG.regDel(way, delete, allowed.tail));
       }
     }), "/reg/del");
   }

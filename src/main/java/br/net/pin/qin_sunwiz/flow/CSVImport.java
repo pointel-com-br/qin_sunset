@@ -116,7 +116,7 @@ public class CSVImport extends Thread {
             var valued = new Valued(field.name, field.nature, values[i]);
             valueds.add(valued);
           }
-          this.destiny.base.helper.insert(connection, new Insert(table.registry, valueds));
+          this.destiny.base.helper.insert(connection, new Insert(table.registry, valueds), null);
         }
       }
     }

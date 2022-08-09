@@ -7,6 +7,7 @@ import java.util.Objects;
 import com.google.gson.Gson;
 
 import br.net.pin.qin_sunwiz.data.Registry;
+import br.net.pin.qin_sunwiz.data.Strain;
 
 public class Allow {
   public APP app;
@@ -44,6 +45,7 @@ public class Allow {
     public Boolean select;
     public Boolean update;
     public Boolean delete;
+    public Strain strain;
   }
 
   public static class SQL {

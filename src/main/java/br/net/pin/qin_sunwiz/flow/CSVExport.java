@@ -62,7 +62,7 @@ public class CSVExport extends Thread {
               row[i] = table.fields.get(i).name;
             }
             csvFile.writeLine(row);
-            var rstOrigin = this.origin.base.helper.select(originConn, new Select(head));
+            var rstOrigin = this.origin.base.helper.select(originConn, new Select(head), null);
             var recordCount = 0L;
             while (rstOrigin.next()) {
               recordCount++;

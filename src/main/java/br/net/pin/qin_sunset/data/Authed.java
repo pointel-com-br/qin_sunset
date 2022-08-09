@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Objects;
 
 import br.net.pin.qin_sunwiz.data.Deed;
+import br.net.pin.qin_sunwiz.data.Pair;
 import br.net.pin.qin_sunwiz.data.Registry;
+import br.net.pin.qin_sunwiz.data.Strain;
 
 public class Authed {
   private final User user;
@@ -173,45 +175,47 @@ public class Authed {
     return false;
   }
 
-  public boolean allowREG(Registry registry, Deed deed) {
-    if (this.isMaster()) {
-      return true;
-    }
+  public Pair<Boolean, Strain> allowREG(Registry registry, Deed deed) {
+    Pair<Boolean, Strain> result = new Pair<>(false, null);
     if (!this.allowBAS(registry.base, deed.mutates)) {
-      return false;
+      return result;
+    }
+    if (this.isMaster()) {
+      result.head = true;
     }
     for (var allow : this.getAccess()) {
       if (allow.reg != null && allow.reg.registry != null) {
         if (canAllowResource(allow.reg.registry, registry)) {
-          if (allow.reg.all) {
-            return true;
+          if (allow.reg.all != null && allow.reg.all) {
+            result.head = true;
           }
           switch (deed) {
             case INSERT:
-              if (allow.reg.insert) {
-                return true;
+              if (allow.reg.insert != null && allow.reg.insert) {
+                result.head = true;
               }
               break;
             case SELECT:
-              if (allow.reg.select) {
-                return true;
+              if (allow.reg.select != null && allow.reg.select) {
+                result.head = true;
               }
               break;
             case UPDATE:
-              if (allow.reg.update) {
-                return true;
+              if (allow.reg.update != null && allow.reg.update) {
+                result.head = true;
               }
               break;
             case DELETE:
-              if (allow.reg.delete) {
-                return true;
+              if (allow.reg.delete != null && allow.reg.delete) {
+                result.head = true;
               }
               break;
           }
+          result.tail = allow.reg.strain;
         }
       }
     }
-    return false;
+    return result;
   }
 
   public static boolean canAllowResource(Registry guarantor, Registry requester) {

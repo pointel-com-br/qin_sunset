@@ -9,6 +9,7 @@ import br.net.pin.qin_sunwiz.data.Delete;
 import br.net.pin.qin_sunwiz.data.Insert;
 import br.net.pin.qin_sunwiz.data.Registry;
 import br.net.pin.qin_sunwiz.data.Select;
+import br.net.pin.qin_sunwiz.data.Strain;
 import br.net.pin.qin_sunwiz.data.Update;
 import br.net.pin.qin_sunwiz.flow.CSVMaker;
 import br.net.pin.qin_sunwiz.flow.CSVWrite;
@@ -56,22 +57,20 @@ public class OrdersREG {
     return result;
   }
 
-  public static String regNew(Way way, Insert insert) throws ServletException {
+  public static String regNew(Way way, Insert insert, Strain strain) throws ServletException {
     try {
-      way.logStep(insert);
       var helped = way.stores.getHelp(insert.registry.base);
-      var result = helped.helper.insert(helped.link, insert);
+      var result = helped.helper.insert(helped.link, insert, strain);
       return "Inserted: " + result;
     } catch (Exception e) {
       throw new ServletException(e);
     }
   }
 
-  public static String regAsk(Way way, Select select) throws ServletException {
+  public static String regAsk(Way way, Select select, Strain strain) throws ServletException {
     try {
-      way.logStep(select);
       var helped = way.stores.getHelp(select.registry.base);
-      var result = helped.helper.select(helped.link, select);
+      var result = helped.helper.select(helped.link, select, strain);
       var maker = new CSVMaker(result, select.fields);
       var build = new StringWriter();
       try (var write = new CSVWrite(build)) {
@@ -86,22 +85,20 @@ public class OrdersREG {
     }
   }
 
-  public static String regSet(Way way, Update update) throws ServletException {
+  public static String regSet(Way way, Update update, Strain strain) throws ServletException {
     try {
-      way.logStep(update);
       var helped = way.stores.getHelp(update.registry.base);
-      var result = helped.helper.update(helped.link, update);
+      var result = helped.helper.update(helped.link, update, strain);
       return "Updated: " + result;
     } catch (Exception e) {
       throw new ServletException(e);
     }
   }
 
-  public static String regDel(Way way, Delete delete) throws ServletException {
+  public static String regDel(Way way, Delete delete, Strain strain) throws ServletException {
     try {
-      way.logStep(delete);
       var helped = way.stores.getHelp(delete.registry.base);
-      var result = helped.helper.delete(helped.link, delete);
+      var result = helped.helper.delete(helped.link, delete, strain);
       return "Deleted: " + result;
     } catch (Exception e) {
       throw new ServletException(e);

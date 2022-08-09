@@ -44,7 +44,7 @@ public abstract class Helper {
     connection.createStatement().execute(builder.toString());
   }
 
-  public ResultSet select(Connection link, Select select) throws Exception {
+  public ResultSet select(Connection link, Select select, Strain strain) throws Exception {
     var builder = new StringBuilder("SELECT ");
     var fromSource = select.registry.getCatalogSchemaName();
     var fromAlias = select.registry.alias != null ? select.registry.alias : fromSource;
@@ -96,6 +96,10 @@ public abstract class Helper {
       builder.append(" WHERE ");
       builder.append(this.formClauses(select.filters, fromAlias, null));
     }
+    if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
+      builder.append(!select.hasFilters() ? " WHERE " : " AND ");
+      builder.append(strain.restrict);
+    }
     if (select.limit != null) {
       builder.append(" LIMIT ");
       builder.append(select.limit);
@@ -132,7 +136,14 @@ public abstract class Helper {
     return prepared.executeQuery();
   }
 
-  public int insert(Connection link, Insert insert) throws Exception {
+  public int insert(Connection link, Insert insert, Strain strain) throws Exception {
+    var strainedHead = "";
+    var strainedTail = "";
+    if (strain != null && strain.include != null && !strain.include.isEmpty()) {
+      var strainedParts = strain.include.split("|");
+      strainedHead = strainedParts[0];
+      strainedTail = strainedParts[1];
+    }
     var builder = new StringBuilder("INSERT INTO ");
     builder.append(insert.registry.getCatalogSchemaName());
     builder.append(" (");
@@ -141,6 +152,10 @@ public abstract class Helper {
         builder.append(", ");
       }
       builder.append(insert.valueds.get(i).name);
+    }
+    if (!strainedHead.isEmpty()) {
+      builder.append(", ");
+      builder.append(strainedHead);
     }
     builder.append(") VALUES (");
     for (var i = 0; i < insert.valueds.size(); i++) {
@@ -153,6 +168,10 @@ public abstract class Helper {
       } else {
         builder.append("NULL");
       }
+    }
+    if (!strainedTail.isEmpty()) {
+      builder.append(", ");
+      builder.append(strainedTail);
     }
     builder.append(")");
     var build = builder.toString();
@@ -168,7 +187,7 @@ public abstract class Helper {
     return prepared.executeUpdate();
   }
 
-  public int update(Connection link, Update update) throws Exception {
+  public int update(Connection link, Update update, Strain strain) throws Exception {
     var builder = new StringBuilder("UPDATE ");
     builder.append(update.registry.getCatalogSchemaName());
     builder.append(" SET ");
@@ -184,11 +203,19 @@ public abstract class Helper {
         builder.append("?");
       }
     }
+    if (strain != null && strain.modify != null && !strain.modify.isEmpty()) {
+      builder.append(", ");
+      builder.append(strain.modify);
+    }
     builder.append(" WHERE ");
     builder.append(this.formClauses(update.filters, null, null));
     if (update.limit != null) {
       builder.append(" LIMIT ");
       builder.append(update.limit);
+    }
+    if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
+      builder.append(" AND ");
+      builder.append(strain.restrict);
     }
     var build = builder.toString();
     System.out.println("UPDATE: " + build);
@@ -211,11 +238,15 @@ public abstract class Helper {
     return prepared.executeUpdate();
   }
 
-  public int delete(Connection link, Delete delete) throws Exception {
+  public int delete(Connection link, Delete delete, Strain strain) throws Exception {
     var builder = new StringBuilder("DELETE FROM ");
     builder.append(delete.registry.getCatalogSchemaName());
     builder.append(" WHERE ");
     builder.append(this.formClauses(delete.filters, null, null));
+    if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
+      builder.append(" AND ");
+      builder.append(strain.restrict);
+    }
     if (delete.limit != null) {
       builder.append(" LIMIT ");
       builder.append(delete.limit);
