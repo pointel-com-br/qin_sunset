@@ -11,5 +11,8 @@
   "servesREG": true,
   "servesSQL": true,
   "servesLIZ": true,
-  "servesGIZ": true
+  "servesGIZ": true,
+  "params": {
+	  "ALWAYS_ORDER_BY_IF_HAS": "ordem,nome,codigo"
+  }
 }

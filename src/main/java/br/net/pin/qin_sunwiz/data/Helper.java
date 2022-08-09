@@ -100,6 +100,19 @@ public abstract class Helper {
       builder.append(!select.hasFilters() ? " WHERE " : " AND ");
       builder.append(strain.restrict);
     }
+    if (select.orders != null && !select.orders.isEmpty()) {
+      builder.append(" ORDER BY ");
+      for (var i = 0; i < select.orders.size(); i++) {
+        if (i > 0) {
+          builder.append(" , ");
+        }
+        var order = select.orders.get(i);
+        builder.append(order.name);
+        if (order.desc != null && order.desc) {
+          builder.append(" DESC");
+        }
+      }
+    }
     if (select.limit != null) {
       builder.append(" LIMIT ");
       builder.append(select.limit);
