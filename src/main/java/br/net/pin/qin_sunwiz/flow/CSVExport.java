@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 
 import br.net.pin.qin_sunwiz.data.DataLink;
+import br.net.pin.qin_sunwiz.data.Registier;
 import br.net.pin.qin_sunwiz.data.Registry;
 import br.net.pin.qin_sunwiz.data.Select;
 
@@ -62,7 +63,7 @@ public class CSVExport extends Thread {
               row[i] = table.fields.get(i).name;
             }
             csvFile.writeLine(row);
-            var rstOrigin = this.origin.base.helper.select(originConn, new Select(head), null);
+            var rstOrigin = this.origin.base.helper.select(originConn, new Select(new Registier(head)), null);
             var recordCount = 0L;
             while (rstOrigin.next()) {
               recordCount++;

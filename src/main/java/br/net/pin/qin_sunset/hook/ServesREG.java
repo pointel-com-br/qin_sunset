@@ -19,7 +19,7 @@ import br.net.pin.qin_sunwiz.data.Deed;
 import br.net.pin.qin_sunwiz.data.Delete;
 import br.net.pin.qin_sunwiz.data.Insert;
 import br.net.pin.qin_sunwiz.data.Order;
-import br.net.pin.qin_sunwiz.data.Registry;
+import br.net.pin.qin_sunwiz.data.Registier;
 import br.net.pin.qin_sunwiz.data.Select;
 import br.net.pin.qin_sunwiz.data.Update;
 import jakarta.servlet.ServletException;
@@ -49,24 +49,29 @@ public class ServesREG {
           return;
         }
         var body = IOUtils.toString(req.getReader());
-        var registry = Registry.fromString(body);
-        if (registry == null) {
+        var registier = Registier.fromString(body);
+        if (registier == null) {
           resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
               "You must provide a registry");
           return;
         }
-        if (registry.base == null || registry.base.isEmpty()) {
+        if (registier.base == null || registier.base.isEmpty()) {
           resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-              "You must provide a registry base");
+              "You must provide a registier base");
           return;
         }
-        if (registry.name == null || registry.name.isEmpty()) {
+        if (registier.registry == null) {
           resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-              "You must provide a registry name");
+              "You must provide a registier registry");
+          return;
+        }
+        if (registier.registry.name == null || registier.registry.name.isEmpty()) {
+          resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+              "You must provide a rigistier registry name");
           return;
         }
         resp.setContentType("application/json");
-        resp.getWriter().print(new Gson().toJson(OrdersREG.regCan(authed, registry)));
+        resp.getWriter().print(new Gson().toJson(OrdersREG.regCan(authed, registier)));
       }
     }), "/reg/can");
   }
@@ -85,22 +90,27 @@ public class ServesREG {
         }
         var body = IOUtils.toString(req.getReader());
         var insert = Insert.fromString(body);
-        if (insert.registry == null) {
+        if (insert.registier == null) {
           resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-              "You must provide a registry");
+              "You must provide a registier");
           return;
         }
-        if (insert.registry.base == null || insert.registry.base.isEmpty()) {
+        if (insert.registier.base == null || insert.registier.base.isEmpty()) {
           resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-              "You must provide a registry base");
+              "You must provide a registier base");
           return;
         }
-        if (insert.registry.name == null || insert.registry.name.isEmpty()) {
+        if (insert.registier.registry == null) {
           resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-              "You must provide a registry name");
+              "You must provide a registier registry");
           return;
         }
-        var allowed = authed.allowREG(insert.registry, Deed.INSERT);
+        if (insert.registier.registry.name == null || insert.registier.registry.name.isEmpty()) {
+          resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+              "You must provide a registier registry name");
+          return;
+        }
+        var allowed = authed.allowREG(insert.registier, Deed.INSERT);
         if (!allowed.head) {
           resp.sendError(HttpServletResponse.SC_FORBIDDEN,
               "You don't have access to deed this registry");
@@ -126,22 +136,27 @@ public class ServesREG {
         }
         var body = IOUtils.toString(req.getReader());
         var select = Select.fromString(body);
-        if (select.registry == null) {
+        if (select.registier == null) {
           resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-              "You must provide a registry");
+              "You must provide a registier");
           return;
         }
-        if (select.registry.base == null || select.registry.base.isEmpty()) {
+        if (select.registier.base == null || select.registier.base.isEmpty()) {
           resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-              "You must provide a registry base");
+              "You must provide a registier base");
           return;
         }
-        if (select.registry.name == null || select.registry.name.isEmpty()) {
+        if (select.registier.registry == null) {
           resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-              "You must provide a registry name");
+              "You must provide a registier registry");
           return;
         }
-        var allowed = authed.allowREG(select.registry, Deed.SELECT);
+        if (select.registier.registry.name == null || select.registier.registry.name.isEmpty()) {
+          resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+              "You must provide a registier registry name");
+          return;
+        }
+        var allowed = authed.allowREG(select.registier, Deed.SELECT);
         if (!allowed.head) {
           resp.sendError(HttpServletResponse.SC_FORBIDDEN,
               "You don't have access to deed this registry");
@@ -198,22 +213,27 @@ public class ServesREG {
         }
         var body = IOUtils.toString(req.getReader());
         var update = Update.fromString(body);
-        if (update.registry == null) {
+        if (update.registier == null) {
           resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-              "You must provide a registry");
+              "You must provide a registier");
           return;
         }
-        if (update.registry.base == null || update.registry.base.isEmpty()) {
+        if (update.registier.base == null || update.registier.base.isEmpty()) {
           resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-              "You must provide a registry base");
+              "You must provide a registier base");
           return;
         }
-        if (update.registry.name == null || update.registry.name.isEmpty()) {
+        if (update.registier.registry == null) {
           resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-              "You must provide a registry name");
+              "You must provide a registier registry");
           return;
         }
-        var allowed = authed.allowREG(update.registry, Deed.UPDATE);
+        if (update.registier.registry.name == null || update.registier.registry.name.isEmpty()) {
+          resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+              "You must provide a registier registry name");
+          return;
+        }
+        var allowed = authed.allowREG(update.registier, Deed.UPDATE);
         if (!allowed.head) {
           resp.sendError(HttpServletResponse.SC_FORBIDDEN,
               "You don't have access to deed this registry");
@@ -239,22 +259,27 @@ public class ServesREG {
         }
         var body = IOUtils.toString(req.getReader());
         var delete = Delete.fromString(body);
-        if (delete.registry == null) {
+        if (delete.registier == null) {
           resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-              "You must provide a registry");
+              "You must provide a registier");
           return;
         }
-        if (delete.registry.base == null || delete.registry.base.isEmpty()) {
+        if (delete.registier.base == null || delete.registier.base.isEmpty()) {
           resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-              "You must provide a registry base");
+              "You must provide a registier base");
           return;
         }
-        if (delete.registry.name == null || delete.registry.name.isEmpty()) {
+        if (delete.registier.registry == null) {
           resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-              "You must provide a registry name");
+              "You must provide a registier registry");
           return;
         }
-        var allowed = authed.allowREG(delete.registry, Deed.DELETE);
+        if (delete.registier.registry.name == null || delete.registier.registry.name.isEmpty()) {
+          resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
+              "You must provide a registier registry name");
+          return;
+        }
+        var allowed = authed.allowREG(delete.registier, Deed.DELETE);
         if (!allowed.head) {
           resp.sendError(HttpServletResponse.SC_FORBIDDEN,
               "You don't have access to deed this registry");

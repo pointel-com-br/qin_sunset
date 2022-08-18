@@ -12,7 +12,7 @@ import br.net.pin.qin_sunwiz.mage.WizData;
 
 public abstract class Helper {
   public List<Registry> getHeads(Connection link) throws Exception {
-    var meta = link.getMetaData();
+  var meta = link.getMetaData();
     var set = meta.getTables(null, null, "%", new String[] { "TABLE" });
     var result = new ArrayList<Registry>();
     while (set.next()) {
@@ -46,8 +46,8 @@ public abstract class Helper {
 
   public ResultSet select(Connection link, Select select, Strain strain) throws Exception {
     var builder = new StringBuilder("SELECT ");
-    var fromSource = select.registry.getCatalogSchemaName();
-    var fromAlias = select.registry.alias != null ? select.registry.alias : fromSource;
+    var fromSource = select.registier.registry.getCatalogSchemaName();
+    var fromAlias = select.registier.registry.alias != null ? select.registier.registry.alias : fromSource;
     if (select.fields == null || select.fields.isEmpty()) {
       builder.append("*");
     } else {
@@ -64,7 +64,7 @@ public abstract class Helper {
     }
     builder.append(" FROM ");
     builder.append(fromSource);
-    if (select.registry.alias != null) {
+    if (select.registier.registry.alias != null) {
       builder.append(" AS ");
       builder.append(fromAlias);
     }
@@ -158,7 +158,7 @@ public abstract class Helper {
       strainedTail = strainedParts[1];
     }
     var builder = new StringBuilder("INSERT INTO ");
-    builder.append(insert.registry.getCatalogSchemaName());
+    builder.append(insert.registier.registry.getCatalogSchemaName());
     builder.append(" (");
     for (var i = 0; i < insert.valueds.size(); i++) {
       if (i > 0) {
@@ -202,7 +202,7 @@ public abstract class Helper {
 
   public int update(Connection link, Update update, Strain strain) throws Exception {
     var builder = new StringBuilder("UPDATE ");
-    builder.append(update.registry.getCatalogSchemaName());
+    builder.append(update.registier.registry.getCatalogSchemaName());
     builder.append(" SET ");
     for (var i = 0; i < update.valueds.size(); i++) {
       if (i > 0) {
@@ -253,7 +253,7 @@ public abstract class Helper {
 
   public int delete(Connection link, Delete delete, Strain strain) throws Exception {
     var builder = new StringBuilder("DELETE FROM ");
-    builder.append(delete.registry.getCatalogSchemaName());
+    builder.append(delete.registier.registry.getCatalogSchemaName());
     builder.append(" WHERE ");
     builder.append(this.formClauses(delete.filters, null, null));
     if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {

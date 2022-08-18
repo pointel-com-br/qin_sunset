@@ -5,18 +5,18 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class Insert implements Fixable {
-  public Registry registry;
+  public Registier registier;
   public List<Valued> valueds;
 
   public Insert() {
   }
 
-  public Insert(Registry registry) {
-    this.registry = registry;
+  public Insert(Registier registier) {
+    this.registier = registier;
   }
 
-  public Insert(Registry registry, List<Valued> valueds) {
-    this.registry = registry;
+  public Insert(Registier registier, List<Valued> valueds) {
+    this.registier = registier;
     this.valueds = valueds;
   }
 

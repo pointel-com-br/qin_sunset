@@ -10,7 +10,6 @@ import br.net.pin.qin_sunwiz.mage.WizChars;
 import br.net.pin.qin_sunwiz.mage.WizData;
 
 public class Registry implements Fixable {
-  public String base;
   public String catalog;
   public String schema;
   public String name;
@@ -35,14 +34,6 @@ public class Registry implements Fixable {
   }
 
   public Registry(String catalog, String schema, String name, String alias) {
-    this.catalog = catalog;
-    this.schema = schema;
-    this.name = name;
-    this.alias = alias;
-  }
-
-  public Registry(String base, String catalog, String schema, String name, String alias) {
-    this.base = base;
     this.catalog = catalog;
     this.schema = schema;
     this.name = name;
@@ -93,14 +84,14 @@ public class Registry implements Fixable {
       return false;
     }
     Registry registry = (Registry) o;
-    return Objects.equals(base, registry.base) && Objects.equals(catalog, registry.catalog)
+    return Objects.equals(catalog, registry.catalog)
         && Objects.equals(schema, registry.schema) && Objects.equals(name, registry.name)
         && Objects.equals(alias, registry.alias);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(base, catalog, schema, name, alias);
+    return Objects.hash(catalog, schema, name, alias);
   }
 
   @Override

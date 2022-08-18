@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class Select implements Fixable {
-  public Registry registry;
+  public Registier registier;
   public List<Typed> fields;
   public List<Joined> joins;
   public List<Filter> filters;
@@ -16,40 +16,40 @@ public class Select implements Fixable {
   public Select() {
   }
 
-  public Select(Registry registry) {
-    this.registry = registry;
+  public Select(Registier registier) {
+    this.registier = registier;
   }
 
-  public Select(Registry registry, List<Typed> fields) {
-    this.registry = registry;
+  public Select(Registier registier, List<Typed> fields) {
+    this.registier = registier;
     this.fields = fields;
   }
 
-  public Select(Registry registry, List<Typed> fields, List<Joined> joins) {
-    this.registry = registry;
+  public Select(Registier registier, List<Typed> fields, List<Joined> joins) {
+    this.registier = registier;
     this.fields = fields;
     this.joins = joins;
   }
 
-  public Select(Registry registry, List<Typed> fields, List<Joined> joins, List<Filter> filters) {
-    this.registry = registry;
+  public Select(Registier registier, List<Typed> fields, List<Joined> joins, List<Filter> filters) {
+    this.registier = registier;
     this.fields = fields;
     this.joins = joins;
     this.filters = filters;
   }
 
-  public Select(Registry registry, List<Typed> fields, List<Joined> joins, List<Filter> filters,
+  public Select(Registier registier, List<Typed> fields, List<Joined> joins, List<Filter> filters,
       List<Order> orders) {
-    this.registry = registry;
+    this.registier = registier;
     this.fields = fields;
     this.joins = joins;
     this.filters = filters;
     this.orders = orders;
   }
 
-  public Select(Registry registry, List<Typed> fields, List<Joined> joins, List<Filter> filters, List<Order> orders,
+  public Select(Registier registier, List<Typed> fields, List<Joined> joins, List<Filter> filters, List<Order> orders,
       Integer offset) {
-    this.registry = registry;
+    this.registier = registier;
     this.fields = fields;
     this.joins = joins;
     this.filters = filters;
@@ -57,9 +57,9 @@ public class Select implements Fixable {
     this.offset = offset;
   }
 
-  public Select(Registry registry, List<Typed> fields, List<Joined> joins, List<Filter> filters, List<Order> orders,
+  public Select(Registier registier, List<Typed> fields, List<Joined> joins, List<Filter> filters, List<Order> orders,
       Integer offset, Integer limit) {
-    this.registry = registry;
+    this.registier = registier;
     this.fields = fields;
     this.joins = joins;
     this.filters = filters;

@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 public class Update implements Fixable {
-  public Registry registry;
+  public Registier registier;
   public List<Valued> valueds;
   public List<Filter> filters;
   public Integer limit;
@@ -13,23 +13,23 @@ public class Update implements Fixable {
   public Update() {
   }
 
-  public Update(Registry registry) {
-    this.registry = registry;
+  public Update(Registier registier) {
+    this.registier = registier;
   }
 
-  public Update(Registry registry, List<Valued> valueds) {
-    this.registry = registry;
+  public Update(Registier registier, List<Valued> valueds) {
+    this.registier = registier;
     this.valueds = valueds;
   }
 
-  public Update(Registry registry, List<Valued> valueds, List<Filter> filters) {
-    this.registry = registry;
+  public Update(Registier registier, List<Valued> valueds, List<Filter> filters) {
+    this.registier = registier;
     this.valueds = valueds;
     this.filters = filters;
   }
 
-  public Update(Registry registry, List<Valued> valueds, List<Filter> filters, Integer limit) {
-    this.registry = registry;
+  public Update(Registier registier, List<Valued> valueds, List<Filter> filters, Integer limit) {
+    this.registier = registier;
     this.valueds = valueds;
     this.filters = filters;
     this.limit = limit;

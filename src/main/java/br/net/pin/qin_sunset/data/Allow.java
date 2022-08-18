@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import com.google.gson.Gson;
 
-import br.net.pin.qin_sunwiz.data.Registry;
+import br.net.pin.qin_sunwiz.data.Registier;
 import br.net.pin.qin_sunwiz.data.Strain;
 
 public class Allow {
@@ -39,7 +39,7 @@ public class Allow {
   }
 
   public static class REG {
-    public Registry registry;
+    public Registier registier;
     public Boolean all;
     public Boolean insert;
     public Boolean select;
@@ -87,7 +87,7 @@ public class Allow {
       }
     }
     if (this.reg != null) {
-      if (this.reg.registry == null) {
+      if (this.reg.registier == null) {
         this.reg = null;
       } else {
         this.reg.all = this.reg.all != null ? this.reg.all : false;
@@ -136,7 +136,7 @@ public class Allow {
       return Objects.equals(this.bas.name, than.bas.name);
     }
     if (this.reg != null && than.reg != null) {
-      return Objects.equals(this.reg.registry, than.reg.registry);
+      return Objects.equals(this.reg.registier, than.reg.registier);
     }
     if (this.sql != null && than.sql != null) {
       return Objects.equals(this.sql.base, than.sql.base) && Objects.equals(this.sql.path, than.sql.path);

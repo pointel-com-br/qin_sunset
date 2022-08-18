@@ -9,6 +9,7 @@ import java.util.Objects;
 import br.net.pin.qin_sunwiz.data.DataLink;
 import br.net.pin.qin_sunwiz.data.Field;
 import br.net.pin.qin_sunwiz.data.Insert;
+import br.net.pin.qin_sunwiz.data.Registier;
 import br.net.pin.qin_sunwiz.data.Registry;
 import br.net.pin.qin_sunwiz.data.Table;
 import br.net.pin.qin_sunwiz.data.Valued;
@@ -116,7 +117,7 @@ public class CSVImport extends Thread {
             var valued = new Valued(field.name, field.nature, values[i]);
             valueds.add(valued);
           }
-          this.destiny.base.helper.insert(connection, new Insert(table.registry, valueds), null);
+          this.destiny.base.helper.insert(connection, new Insert(new Registier(table.registry), valueds), null);
         }
       }
     }

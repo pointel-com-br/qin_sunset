@@ -7,7 +7,7 @@ import br.net.pin.qin_sunset.data.Authed;
 import br.net.pin.qin_sunset.data.Way;
 import br.net.pin.qin_sunwiz.data.Delete;
 import br.net.pin.qin_sunwiz.data.Insert;
-import br.net.pin.qin_sunwiz.data.Registry;
+import br.net.pin.qin_sunwiz.data.Registier;
 import br.net.pin.qin_sunwiz.data.Select;
 import br.net.pin.qin_sunwiz.data.Strain;
 import br.net.pin.qin_sunwiz.data.Update;
@@ -17,9 +17,9 @@ import jakarta.servlet.ServletException;
 
 public class OrdersREG {
 
-  public static Allow.REG regCan(Authed authed, Registry registry) {
+  public static Allow.REG regCan(Authed authed, Registier registier) {
     var result = new Allow.REG();
-    result.registry = registry;
+    result.registier = registier;
     if (authed.isMaster()) {
       result.all = true;
       result.insert = true;
@@ -34,8 +34,8 @@ public class OrdersREG {
     result.update = false;
     result.delete = false;
     for (var allow : authed.getAccess()) {
-      if (allow.reg != null && allow.reg.registry != null) {
-        if (Authed.canAllowResource(allow.reg.registry, registry)) {
+      if (allow.reg != null && allow.reg.registier != null) {
+        if (Authed.canAllowResource(allow.reg.registier, registier)) {
           if (allow.reg.all != null) {
             result.all = allow.reg.all;
           }
@@ -59,7 +59,7 @@ public class OrdersREG {
 
   public static String regNew(Way way, Insert insert, Strain strain) throws ServletException {
     try {
-      var helped = way.stores.getHelp(insert.registry.base);
+      var helped = way.stores.getHelp(insert.registier.base);
       var result = helped.helper.insert(helped.link, insert, strain);
       return "Inserted: " + result;
     } catch (Exception e) {
@@ -69,7 +69,7 @@ public class OrdersREG {
 
   public static String regAsk(Way way, Select select, Strain strain) throws ServletException {
     try {
-      var helped = way.stores.getHelp(select.registry.base);
+      var helped = way.stores.getHelp(select.registier.base);
       var result = helped.helper.select(helped.link, select, strain);
       var maker = new CSVMaker(result, select.fields);
       var build = new StringWriter();
@@ -87,7 +87,7 @@ public class OrdersREG {
 
   public static String regSet(Way way, Update update, Strain strain) throws ServletException {
     try {
-      var helped = way.stores.getHelp(update.registry.base);
+      var helped = way.stores.getHelp(update.registier.base);
       var result = helped.helper.update(helped.link, update, strain);
       return "Updated: " + result;
     } catch (Exception e) {
@@ -97,7 +97,7 @@ public class OrdersREG {
 
   public static String regDel(Way way, Delete delete, Strain strain) throws ServletException {
     try {
-      var helped = way.stores.getHelp(delete.registry.base);
+      var helped = way.stores.getHelp(delete.registier.base);
       var result = helped.helper.delete(helped.link, delete, strain);
       return "Deleted: " + result;
     } catch (Exception e) {

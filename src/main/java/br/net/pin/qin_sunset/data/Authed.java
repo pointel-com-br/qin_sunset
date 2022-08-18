@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import br.net.pin.qin_sunwiz.data.Deed;
 import br.net.pin.qin_sunwiz.data.Pair;
-import br.net.pin.qin_sunwiz.data.Registry;
+import br.net.pin.qin_sunwiz.data.Registier;
 import br.net.pin.qin_sunwiz.data.Strain;
 
 public class Authed {
@@ -175,17 +175,17 @@ public class Authed {
     return false;
   }
 
-  public Pair<Boolean, Strain> allowREG(Registry registry, Deed deed) {
+  public Pair<Boolean, Strain> allowREG(Registier registier, Deed deed) {
     Pair<Boolean, Strain> result = new Pair<>(false, null);
-    if (!this.allowBAS(registry.base, deed.mutates)) {
+    if (!this.allowBAS(registier.base, deed.mutates)) {
       return result;
     }
     if (this.isMaster()) {
       result.head = true;
     }
     for (var allow : this.getAccess()) {
-      if (allow.reg != null && allow.reg.registry != null) {
-        if (canAllowResource(allow.reg.registry, registry)) {
+      if (allow.reg != null && allow.reg.registier != null) {
+        if (canAllowResource(allow.reg.registier, registier)) {
           if (allow.reg.all != null && allow.reg.all) {
             result.head = true;
           }
@@ -218,11 +218,12 @@ public class Authed {
     return result;
   }
 
-  public static boolean canAllowResource(Registry guarantor, Registry requester) {
-    if (Objects.equals(guarantor.name, requester.name)) {
+  public static boolean canAllowResource(Registier guarantor, Registier requester) {
+    if (guarantor.registry != null && requester.registry != null
+        && Objects.equals(guarantor.registry.name, requester.registry.name)) {
       if (checkWeighted(guarantor.base, requester.base) &&
-          checkWeighted(guarantor.catalog, requester.catalog) &&
-          checkWeighted(guarantor.schema, requester.schema)) {
+          checkWeighted(guarantor.registry.catalog, requester.registry.catalog) &&
+          checkWeighted(guarantor.registry.schema, requester.registry.schema)) {
         return true;
       }
     }
