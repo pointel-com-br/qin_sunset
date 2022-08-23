@@ -31,8 +31,8 @@ public class Registier {
     if (!(o instanceof Registier)) {
       return false;
     }
-    Registier registryer = (Registier) o;
-    return Objects.equals(base, registryer.base) && Objects.equals(registry, registryer.registry);
+    Registier registier = (Registier) o;
+    return Objects.equals(base, registier.base) && Objects.equals(registry, registier.registry);
   }
 
   @Override
