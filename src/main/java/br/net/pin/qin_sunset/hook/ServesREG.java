@@ -170,6 +170,7 @@ public class ServesREG {
       private void applyAlwaysOrderByIfHas(Way way, Authed authed, Select select) {
         var always_order = OrdersUtils.askParams(way, authed, Params.ALWAYS_ORDER_BY_IF_HAS.toString());
         if (always_order != null && !always_order.isEmpty()) {
+          var source = select.registier.registry.getSource();
           for (var always_order_by : always_order.split(",")) {
             var always_order_by_parts = always_order_by.split(" ");
             var always_order_by_name = always_order_by_parts[0].trim();
@@ -185,7 +186,11 @@ public class ServesREG {
                 if (select.orders == null) {
                   select.orders = new ArrayList<>();
                 }
-                select.orders.add(new Order(always_order_by_name, always_order_by_desc));
+                var sourceAndName = always_order_by_name;
+                if (!sourceAndName.contains(".")) {
+                  sourceAndName = source + "." + sourceAndName;
+                }
+                select.orders.add(new Order(sourceAndName, always_order_by_desc));
                 found = true;
                 break;
               }

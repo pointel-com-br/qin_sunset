@@ -40,6 +40,10 @@ public class Registry implements Fixable {
     this.alias = alias;
   }
 
+  public String getSource() {
+    return this.alias != null && !this.alias.isEmpty() ? this.alias : this.getCatalogSchemaName();
+  }
+
   public String getSchemaName() {
     return WizChars.sum(".", this.schema, this.name);
   }
