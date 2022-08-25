@@ -12,7 +12,7 @@ import br.net.pin.qin_sunwiz.mage.WizData;
 
 public abstract class Helper {
   public List<Registry> getHeads(Connection link) throws Exception {
-  var meta = link.getMetaData();
+    var meta = link.getMetaData();
     var set = meta.getTables(null, null, "%", new String[] { "TABLE" });
     var result = new ArrayList<Registry>();
     while (set.next()) {
@@ -71,7 +71,9 @@ public abstract class Helper {
     if (select.hasJoins()) {
       for (var join : select.joins) {
         if (join.ties != null) {
+          builder.append(" ");
           builder.append(join.ties.toString());
+          builder.append(" ");
         }
         builder.append(" JOIN ");
         var withSource = join.registry.getCatalogSchemaName();
