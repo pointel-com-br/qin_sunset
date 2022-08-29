@@ -161,6 +161,10 @@ public class WizDate {
     return WizDate.MOMENT_FILE_FORMAT.parse(formatted);
   }
 
+  public static final SimpleDateFormat DATE_USER_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+  public static final SimpleDateFormat TIME_USER_FORMAT = new SimpleDateFormat("HH:mm:ss");
+  public static final SimpleDateFormat TIMESTAMP_USER_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
   public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
   public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
   public static final SimpleDateFormat TIME_MILLIS_FORMAT = new SimpleDateFormat(
@@ -180,6 +184,7 @@ public class WizDate {
       "yyyy-MM-dd-HH-mm-ss.ZZZ");
 
   public static final SimpleDateFormat[] FORMATS = {
+      WizDate.DATE_USER_FORMAT, WizDate.TIME_USER_FORMAT, WizDate.TIMESTAMP_USER_FORMAT,
       WizDate.DATE_FORMAT, WizDate.TIME_FORMAT, WizDate.TIME_MILLIS_FORMAT, WizDate.TIMESTAMP_FORMAT,
       WizDate.MOMENT_FORMAT, WizDate.TIME_FILE_FORMAT, WizDate.TIME_MILLIS_FILE_FORMAT, WizDate.MOMENT_FILE_FORMAT
   };
