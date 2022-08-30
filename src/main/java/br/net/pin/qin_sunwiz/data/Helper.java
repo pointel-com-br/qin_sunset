@@ -391,7 +391,7 @@ public abstract class Helper {
         builder.append(" NOT ");
       }
       if (clause.valued != null) {
-        if (from != null && !from.isEmpty()) {
+        if (from != null && !from.isEmpty() && !clause.valued.name.contains(".")) {
           builder.append(from);
           builder.append(".");
         }
