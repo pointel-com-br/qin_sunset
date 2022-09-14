@@ -47,7 +47,9 @@ public abstract class Helper {
   public ResultSet select(Connection link, Select select, Strain strain) throws Exception {
     var builder = new StringBuilder("SELECT ");
     var fromSource = select.registier.registry.getCatalogSchemaName();
-    var fromAlias = select.registier.registry.alias != null ? select.registier.registry.alias : fromSource;
+    var dataSource = select.registier.registry.alias != null && !select.registier.registry.alias.isEmpty()
+        ? select.registier.registry.alias
+        : fromSource;
     if (select.fields == null || select.fields.isEmpty()) {
       builder.append("*");
     } else {
@@ -56,7 +58,7 @@ public abstract class Helper {
           builder.append(", ");
         }
         if (!select.fields.get(i).name.contains(".")) {
-          builder.append(fromAlias);
+          builder.append(dataSource);
           builder.append(".");
         }
         builder.append(select.fields.get(i).name);
@@ -64,9 +66,9 @@ public abstract class Helper {
     }
     builder.append(" FROM ");
     builder.append(fromSource);
-    if (select.registier.registry.alias != null) {
+    if (select.registier.registry.alias != null && !select.registier.registry.alias.isEmpty()) {
       builder.append(" AS ");
-      builder.append(fromAlias);
+      builder.append(select.registier.registry.alias);
     }
     if (select.hasJoins()) {
       for (var join : select.joins) {
@@ -90,17 +92,21 @@ public abstract class Helper {
         }
         if (join.hasFilters()) {
           builder.append(" ON ");
-          builder.append(this.formClauses(join.filters, fromAlias, withAlias));
+          builder.append(this.formClauses(join.filters, dataSource, withAlias));
         }
       }
     }
     if (select.hasFilters()) {
       builder.append(" WHERE ");
-      builder.append(this.formClauses(select.filters, fromAlias, null));
+      builder.append(this.formClauses(select.filters, dataSource, null));
     }
     if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
       builder.append(!select.hasFilters() ? " WHERE " : " AND ");
-      builder.append(strain.restrict);
+      var restricted = strain.restrict;
+      if (restricted.contains("${dataSource}")) {
+        restricted = restricted.replace("${dataSource}", dataSource);
+      }
+      builder.append(restricted);
     }
     if (select.orders != null && !select.orders.isEmpty()) {
       builder.append(" ORDER BY ");
