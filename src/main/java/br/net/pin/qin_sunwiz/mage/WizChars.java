@@ -263,4 +263,117 @@ public class WizChars {
     }
     return result;
   }
+
+  public static String getNext(String last, Boolean onlyNumbers) {
+    String result = "";
+    boolean done = false;
+    for (int i = last.length() - 1; i > -1; i--) {
+      char doing = last.charAt(i);
+      if (!done) {
+        result = getNext(doing, onlyNumbers) + result;
+        if (!isLastInOrd(doing, onlyNumbers)) {
+          done = true;
+        }
+      } else {
+        result = doing + result;
+      }
+    }
+    return result;
+  }
+
+  public static char getNext(char last, boolean onlyNumbers) {
+    char result = ' ';
+    if (last == ' ') {
+      result = '0';
+    } else if (last == '0') {
+      result = '1';
+    } else if (last == '1') {
+      result = '2';
+    } else if (last == '2') {
+      result = '3';
+    } else if (last == '3') {
+      result = '4';
+    } else if (last == '4') {
+      result = '5';
+    } else if (last == '5') {
+      result = '6';
+    } else if (last == '6') {
+      result = '7';
+    } else if (last == '7') {
+      result = '8';
+    } else if (last == '8') {
+      result = '9';
+    } else if (last == '9') {
+      if (onlyNumbers) {
+        result = '0';
+      } else {
+        result = 'A';
+      }
+    } else if (!onlyNumbers) {
+      if (last == 'A') {
+        result = 'B';
+      } else if (last == 'B') {
+        result = 'C';
+      } else if (last == 'C') {
+        result = 'D';
+      } else if (last == 'D') {
+        result = 'E';
+      } else if (last == 'E') {
+        result = 'F';
+      } else if (last == 'F') {
+        result = 'G';
+      } else if (last == 'G') {
+        result = 'H';
+      } else if (last == 'H') {
+        result = 'I';
+      } else if (last == 'I') {
+        result = 'J';
+      } else if (last == 'J') {
+        result = 'K';
+      } else if (last == 'K') {
+        result = 'L';
+      } else if (last == 'L') {
+        result = 'M';
+      } else if (last == 'M') {
+        result = 'N';
+      } else if (last == 'N') {
+        result = 'O';
+      } else if (last == 'O') {
+        result = 'P';
+      } else if (last == 'P') {
+        result = 'Q';
+      } else if (last == 'Q') {
+        result = 'R';
+      } else if (last == 'R') {
+        result = 'S';
+      } else if (last == 'S') {
+        result = 'T';
+      } else if (last == 'T') {
+        result = 'U';
+      } else if (last == 'U') {
+        result = 'V';
+      } else if (last == 'V') {
+        result = 'W';
+      } else if (last == 'W') {
+        result = 'X';
+      } else if (last == 'X') {
+        result = 'Y';
+      } else if (last == 'Y') {
+        result = 'Z';
+      } else if (last == 'Z') {
+        result = '0';
+      }
+    }
+    return result;
+  }
+
+  public static boolean isLastInOrd(char ch, boolean onlyNumbers) {
+    if (ch == '9' && onlyNumbers) {
+      return true;
+    }
+    if (ch == 'Z' && !onlyNumbers) {
+      return true;
+    }
+    return false;
+  }
 }
