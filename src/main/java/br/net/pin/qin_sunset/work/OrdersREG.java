@@ -60,8 +60,8 @@ public class OrdersREG {
   public static String regNew(Way way, Insert insert, Strain strain) throws ServletException {
     try {
       var helped = way.stores.getHelp(insert.registier.base);
-      var result = helped.helper.insert(helped.link, insert, strain);
-      return "Inserted: " + result;
+      var resultID = helped.helper.insert(helped.link, insert, strain);
+      return resultID;
     } catch (Exception e) {
       throw new ServletException(e);
     }

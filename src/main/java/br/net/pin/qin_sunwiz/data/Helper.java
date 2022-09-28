@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Objects;
 
 import br.net.pin.qin_sunwiz.data.Filter.Seems;
+import br.net.pin.qin_sunwiz.mage.Base36;
+import br.net.pin.qin_sunwiz.mage.WizChars;
 import br.net.pin.qin_sunwiz.mage.WizData;
 
 public abstract class Helper {
@@ -157,7 +159,8 @@ public abstract class Helper {
     return prepared.executeQuery();
   }
 
-  public int insert(Connection link, Insert insert, Strain strain) throws Exception {
+  public String insert(Connection link, Insert insert, Strain strain) throws Exception {
+    var ID = getID(link, insert);
     var strainedHead = "";
     var strainedTail = "";
     if (strain != null && strain.include != null && !strain.include.isEmpty()) {
@@ -205,7 +208,124 @@ public abstract class Helper {
         param_index++;
       }
     }
-    return prepared.executeUpdate();
+    prepared.executeUpdate();
+    return ID;
+  }
+
+  public String getID(Connection link, Insert insert) throws Exception {
+    if (insert.toGetID == null || insert.toGetID.name == null || insert.toGetID.name.isEmpty()) {
+      return "";
+    }
+    var format = getIDFormat(link, insert);
+    if (format == null || format.isEmpty()) {
+      throw new Exception(
+          "Could not get the ID because: format not found for the table " + insert.registier.registry.name);
+    }
+    var formatParts = format.split(";");
+    if (formatParts.length < 2) {
+      throw new Exception("Could not get the ID because: format mal formed");
+    }
+    var formatType = formatParts[0];
+    var formatSize = Integer.parseInt(formatParts[1]);
+    switch (formatType) {
+      case "MX":
+        return getIDMX(link, insert, formatSize);
+      case "CX":
+        return getIDCX(link, insert, formatSize);
+      case "NS":
+        return getIDNS(link, insert, formatSize);
+      case "CS":
+        return getIDCS(link, insert, formatSize);
+      default:
+        throw new Exception("Could not get the ID because: could not identify the format type");
+    }
+  }
+
+  public String getIDFormat(Connection link, Insert insert) throws Exception {
+    var rst = link.createStatement()
+        .executeQuery("SELECT formato FROM codigos WHERE tabela = '" + insert.registier.registry.name + "'");
+    if (rst.next()) {
+      return rst.getString(1);
+    }
+    return null;
+  }
+
+  public String getIDMX(Connection link, Insert insert, int formatSize) throws Exception {
+    var rst = link.createStatement()
+        .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM " + insert.registier.registry.name + " WHERE "
+            + insert.toGetID.filter.name + " = '" + insert.toGetID.filter.data.toString() + "'");
+    String last;
+    if (rst.next()) {
+      last = rst.getString(1);
+    } else {
+      last = WizChars.fill("", '0', formatSize);
+    }
+    String next = WizChars.getNext(last, true);
+    putID(insert, next);
+    return next;
+  }
+
+  public String getIDCX(Connection link, Insert insert, int formatSize) throws Exception {
+    var rst = link.createStatement()
+        .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM " + insert.registier.registry.name + " WHERE "
+            + insert.toGetID.filter.name + " = '" + insert.toGetID.filter.data.toString() + "'");
+    String last;
+    if (rst.next()) {
+      last = rst.getString(1);
+    } else {
+      last = WizChars.fill("", '0', formatSize);
+    }
+    String next = WizChars.getNext(last, false);
+    putID(insert, next);
+    return next;
+  }
+
+  public String getIDNS(Connection link, Insert insert, int formatSize) throws Exception {
+    String sequence = getIDSequence(link, insert);
+    var rst = link.createStatement().executeQuery("SELECT nextval('" + sequence + "')");
+    Long nextVal;
+    if (rst.next()) {
+      nextVal = rst.getLong(1);
+    } else {
+      nextVal = 1l;
+    }
+    var next = nextVal.toString();
+    next = WizChars.fill(next, '0', formatSize - next.length());
+    putID(insert, next);
+    return next;
+  }
+
+  public String getIDCS(Connection link, Insert insert, int formatSize) throws Exception {
+    String sequence = getIDSequence(link, insert);
+    var rst = link.createStatement().executeQuery("SELECT nextval('" + sequence + "')");
+    Long nextVal;
+    if (rst.next()) {
+      nextVal = rst.getLong(1);
+    } else {
+      nextVal = 1l;
+    }
+    var next = Base36.fromBase10(nextVal);
+    next = WizChars.fill(next, '0', formatSize - next.length());
+    putID(insert, next);
+    return next;
+  }
+
+  public String getIDSequence(Connection link, Insert insert) throws Exception {
+    var rst = link.createStatement()
+        .executeQuery("SELECT sequencia FROM codigos WHERE tabela = '" + insert.registier.registry.name + "'");
+    if (rst.next()) {
+      return rst.getString(1);
+    }
+    return null;
+  }
+
+  public void putID(Insert insert, Object next) {
+    for (var valued : insert.valueds) {
+      if (Objects.equals(insert.toGetID.name, valued.name)) {
+        valued.data = next;
+        break;
+      }
+    }
   }
 
   public int update(Connection link, Update update, Strain strain) throws Exception {

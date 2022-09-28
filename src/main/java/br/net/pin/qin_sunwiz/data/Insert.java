@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 public class Insert implements Fixable {
   public Registier registier;
   public List<Valued> valueds;
-  public List<String> toGetID;
+  public ToGetID toGetID;
 
   public Insert() {
   }
@@ -21,7 +21,7 @@ public class Insert implements Fixable {
     this.valueds = valueds;
   }
 
-  public Insert(Registier registier, List<Valued> valueds, List<String> toGetID) {
+  public Insert(Registier registier, List<Valued> valueds, ToGetID toGetID) {
     this.registier = registier;
     this.valueds = valueds;
     this.toGetID = toGetID;
