@@ -6,16 +6,11 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Launch Current File",
-      "request": "launch",
-      "mainClass": "${file}"
-    },
-    {
-      "type": "java",
       "name": "Launch QinSunset",
       "request": "launch",
       "mainClass": "br.net.pin.qin_sunset.QinSunset",
-      "projectName": "qin_sunset"
+      "projectName": "qin_sunset",
+      "cwd": "C:\\Users\\emuvi\\Work\\Pointel\\Test"
     }
   ]
 }
