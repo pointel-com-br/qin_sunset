@@ -186,8 +186,8 @@ public abstract class Helper {
       if (i > 0) {
         builder.append(", ");
       }
-      final var value = insert.valueds.get(i);
-      if (value.data != null) {
+      final var valued = insert.valueds.get(i);
+      if (valued.data != null) {
         builder.append("?");
       } else {
         builder.append("NULL");
@@ -203,7 +203,7 @@ public abstract class Helper {
     var prepared = link.prepareStatement(build);
     var param_index = 1;
     for (var valued : insert.valueds) {
-      if (valued != null) {
+      if (valued.data != null) {
         this.setParameter(prepared, param_index, valued);
         param_index++;
       }
