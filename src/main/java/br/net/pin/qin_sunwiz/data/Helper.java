@@ -161,12 +161,15 @@ public abstract class Helper {
 
   public String insert(Connection link, Insert insert, Strain strain) throws Exception {
     var ID = getID(link, insert);
-    var strainedHead = "";
-    var strainedTail = "";
+    var strained = new ArrayList<Pair<String, String>>();
     if (strain != null && strain.include != null && !strain.include.isEmpty()) {
-      var strainedParts = strain.include.split("|");
-      strainedHead = strainedParts[0];
-      strainedTail = strainedParts[1];
+      var includes = strain.include.split("\\|");
+      for (var element : includes) {
+        if (!element.isEmpty() && element.contains("=")) {
+          var parts = element.split("\\=");
+          strained.add(new Pair<>(parts[0].trim(), parts[1].trim()));
+        }
+      }
     }
     var builder = new StringBuilder("INSERT INTO ");
     builder.append(insert.registier.registry.getCatalogSchemaName());
@@ -177,9 +180,11 @@ public abstract class Helper {
       }
       builder.append(insert.valueds.get(i).name);
     }
-    if (!strainedHead.isEmpty()) {
-      builder.append(", ");
-      builder.append(strainedHead);
+    if (!strained.isEmpty()) {
+      for (var toStrain : strained) {
+        builder.append(", ");
+        builder.append(toStrain.head);
+      }
     }
     builder.append(") VALUES (");
     for (var i = 0; i < insert.valueds.size(); i++) {
@@ -193,9 +198,15 @@ public abstract class Helper {
         builder.append("NULL");
       }
     }
-    if (!strainedTail.isEmpty()) {
+    if (!strained.isEmpty()) {
       builder.append(", ");
-      builder.append(strainedTail);
+      for (var toStrain : strained) {
+        if (!toStrain.tail.isEmpty()) {
+          builder.append("?");
+        } else {
+          builder.append("NULL");
+        }
+      }
     }
     builder.append(")");
     var build = builder.toString();
@@ -206,6 +217,14 @@ public abstract class Helper {
       if (valued.data != null) {
         this.setParameter(prepared, param_index, valued);
         param_index++;
+      }
+    }
+    if (!strained.isEmpty()) {
+      for (var toStrain : strained) {
+        if (!toStrain.tail.isEmpty()) {
+          this.setParameter(prepared, param_index, new Valued(toStrain.head, toStrain.tail));
+          param_index++;
+        }
       }
     }
     prepared.executeUpdate();
