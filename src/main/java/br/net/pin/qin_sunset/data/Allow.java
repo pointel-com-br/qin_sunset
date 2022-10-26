@@ -16,7 +16,6 @@ public class Allow {
   public BAS bas;
   public REG reg;
   public SQL sql;
-  public LIZ liz;
   public GIZ giz;
 
   public static class APP {
@@ -50,10 +49,6 @@ public class Allow {
 
   public static class SQL {
     public String base;
-    public String path;
-  }
-
-  public static class LIZ {
     public String path;
   }
 
@@ -105,13 +100,6 @@ public class Allow {
         this.sql.path = new File(this.sql.path).getAbsolutePath();
       }
     }
-    if (this.liz != null) {
-      if (this.liz.path == null || this.liz.path.isEmpty()) {
-        this.liz = null;
-      } else {
-        this.liz.path = new File(this.liz.path).getAbsolutePath();
-      }
-    }
     if (this.giz != null) {
       if (this.giz.base == null || this.giz.base.isEmpty() || this.giz.path == null
           || this.giz.path.isEmpty()) {
@@ -140,9 +128,6 @@ public class Allow {
     }
     if (this.sql != null && than.sql != null) {
       return Objects.equals(this.sql.base, than.sql.base) && Objects.equals(this.sql.path, than.sql.path);
-    }
-    if (this.liz != null && than.liz != null) {
-      return Objects.equals(this.liz.path, than.liz.path);
     }
     if (this.giz != null && than.giz != null) {
       return Objects.equals(this.giz.base, than.giz.base) && Objects.equals(this.giz.path, than.giz.path);

@@ -95,8 +95,6 @@ public class QinSunset {
         .desc("Should we serve register actions?").build());
     result.addOption(Option.builder("s").longOpt("serves-sql")
         .desc("Should we serve SQL executions?").build());
-    result.addOption(Option.builder("z").longOpt("serves-liz")
-        .desc("Should we serve LIZ executions?").build());
     result.addOption(Option.builder("g").longOpt("serves-giz")
         .desc("Should we serve GIZ executions?").build());
     return result;
@@ -144,9 +142,6 @@ public class QinSunset {
     }
     if (command.hasOption('s')) {
       setup.servesSQL = true;
-    }
-    if (command.hasOption('z')) {
-      setup.servesLIZ = true;
     }
     if (command.hasOption('g')) {
       setup.servesGIZ = true;
