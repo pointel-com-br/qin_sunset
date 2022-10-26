@@ -33,6 +33,6 @@ public class ServesGIZ {
           throws ServletException, IOException {
         resp.getWriter().print(req.getRequestURI());
       }
-    }), "/list/gizs");
+    }), "/list/giz");
   }
 }

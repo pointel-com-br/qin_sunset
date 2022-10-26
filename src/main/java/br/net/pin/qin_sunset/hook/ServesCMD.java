@@ -34,7 +34,7 @@ public class ServesCMD {
         resp.setContentType("text/plain");
         resp.getWriter().print(OrdersCMD.list(way, authed));
       }
-    }), "/list/cmds");
+    }), "/list/cmd");
   }
 
   private static void initRun(ServletContextHandler context) {

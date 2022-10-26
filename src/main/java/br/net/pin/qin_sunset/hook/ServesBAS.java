@@ -31,6 +31,6 @@ public class ServesBAS {
         resp.setContentType("text/plain");
         resp.getWriter().print(OrdersBAS.list(way, authed));
       }
-    }), "/list/bases");
+    }), "/list/base");
   }
 }

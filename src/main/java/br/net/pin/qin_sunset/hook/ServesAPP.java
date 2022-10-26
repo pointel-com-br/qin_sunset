@@ -77,6 +77,6 @@ public class ServesAPP {
         resp.setContentType("text/plain");
         resp.getWriter().print(OrdersAPP.list(way, authed));
       }
-    }), "/list/apps");
+    }), "/list/app");
   }
 }
