@@ -15,7 +15,6 @@ public class Allow {
   public CMD cmd;
   public BAS bas;
   public REG reg;
-  public SQL sql;
   public GIZ giz;
 
   public static class APP {
@@ -45,11 +44,6 @@ public class Allow {
     public Boolean update;
     public Boolean delete;
     public Strain strain;
-  }
-
-  public static class SQL {
-    public String base;
-    public String path;
   }
 
   public static class GIZ {
@@ -91,14 +85,6 @@ public class Allow {
         this.reg.delete = this.reg.delete != null ? this.reg.delete : false;
       }
     }
-    if (this.sql != null) {
-      if (this.sql.base == null || this.sql.base.isEmpty() || this.sql.path == null
-          || this.sql.path.isEmpty()) {
-        this.sql = null;
-      } else {
-        this.sql.path = new File(this.sql.path).getAbsolutePath();
-      }
-    }
     if (this.giz != null) {
       if (this.giz.path == null || this.giz.path.isEmpty()) {
         this.giz = null;
@@ -123,9 +109,6 @@ public class Allow {
     }
     if (this.reg != null && than.reg != null) {
       return Objects.equals(this.reg.registier, than.reg.registier);
-    }
-    if (this.sql != null && than.sql != null) {
-      return Objects.equals(this.sql.base, than.sql.base) && Objects.equals(this.sql.path, than.sql.path);
     }
     if (this.giz != null && than.giz != null) {
       return Objects.equals(this.giz.path, than.giz.path);
