@@ -53,7 +53,6 @@ public class Allow {
   }
 
   public static class GIZ {
-    public String base;
     public String path;
   }
 
@@ -101,8 +100,7 @@ public class Allow {
       }
     }
     if (this.giz != null) {
-      if (this.giz.base == null || this.giz.base.isEmpty() || this.giz.path == null
-          || this.giz.path.isEmpty()) {
+      if (this.giz.path == null || this.giz.path.isEmpty()) {
         this.giz = null;
       } else {
         this.giz.path = new File(this.giz.path).getAbsolutePath();
@@ -130,7 +128,7 @@ public class Allow {
       return Objects.equals(this.sql.base, than.sql.base) && Objects.equals(this.sql.path, than.sql.path);
     }
     if (this.giz != null && than.giz != null) {
-      return Objects.equals(this.giz.base, than.giz.base) && Objects.equals(this.giz.path, than.giz.path);
+      return Objects.equals(this.giz.path, than.giz.path);
     }
     return false;
   }
