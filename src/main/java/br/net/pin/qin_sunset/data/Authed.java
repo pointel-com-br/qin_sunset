@@ -12,12 +12,14 @@ import br.net.pin.qin_sunwiz.data.Strain;
 public class Authed {
   private final User user;
   private final Group group;
+  private final GizMap gizMap;
   private final IssuedMap issuedMap;
   private final List<Allow> access;
 
   public Authed(User user, Group group) {
     this.user = user;
     this.group = group;
+    this.gizMap = new GizMap();
     this.issuedMap = new IssuedMap();
     this.access = new ArrayList<>();
     this.initAccess();
@@ -245,6 +247,10 @@ public class Authed {
       return this.group.params.get(name);
     }
     return null;
+  }
+
+  public GizMap getGizMap() {
+    return this.gizMap;
   }
 
   public String newIssued(Issued issued) {
