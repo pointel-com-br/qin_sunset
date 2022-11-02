@@ -12,6 +12,23 @@ import br.net.pin.qin_sunset.data.Way;
 import br.net.pin.qin_sunset.swap.Execute;
 
 public class OrdersCMD {
+  public static String list(Way way, Authed forAuthed) {
+    var cmdsDir = new File(way.air.setup.serverFolder, "cmd");
+    if (forAuthed.isMaster()) {
+      return Utils.listFolders(cmdsDir);
+    }
+    var result = new StringBuilder();
+    for (var access : forAuthed.getAccess()) {
+      if (access.cmd != null) {
+        if (new File(cmdsDir, access.cmd.name).exists()) {
+          result.append(access.cmd.name);
+          result.append("\n");
+        }
+      }
+    }
+    return result.toString();
+  }
+
   public static Issued run(Execute execution) throws Exception {
     var issued = new Issued();
     var builder = new ProcessBuilder();
@@ -65,22 +82,5 @@ public class OrdersCMD {
       };
     }.start();
     return issued;
-  }
-
-  public static String list(Way way, Authed forAuthed) {
-    var cmdsDir = new File(way.air.setup.serverFolder, "cmd");
-    if (forAuthed.isMaster()) {
-      return Utils.listFolders(cmdsDir);
-    }
-    var result = new StringBuilder();
-    for (var access : forAuthed.getAccess()) {
-      if (access.cmd != null) {
-        if (new File(cmdsDir, access.cmd.name).exists()) {
-          result.append(access.cmd.name);
-          result.append("\n");
-        }
-      }
-    }
-    return result.toString();
   }
 }
