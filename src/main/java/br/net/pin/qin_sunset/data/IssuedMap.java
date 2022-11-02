@@ -1,10 +1,10 @@
 package br.net.pin.qin_sunset.data;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 
 import br.net.pin.qin_sunset.work.Utils;
 
-public class IssuedMap extends ConcurrentHashMap<String, Issued> {
+public class IssuedMap extends HashMap<String, Issued> {
   public String newIssued(Issued issued) {
     String token = Utils.newRandomToken();
     this.put(token, issued);
