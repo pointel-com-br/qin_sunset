@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import br.net.pin.qin_sunset.work.OrdersGIZ;
+import br.net.pin.qin_sunset.work.Runner;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,18 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class ServesGIZ {
   public static void init(ServletContextHandler context) {
-    initRun(context);
     initList(context);
-  }
-
-  private static void initRun(ServletContextHandler context) {
-    context.addServlet(new ServletHolder(new HttpServlet() {
-      @Override
-      protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-          throws ServletException, IOException {
-        resp.getWriter().print(req.getRequestURI());
-      }
-    }), "/giz/run");
   }
 
   private static void initList(ServletContextHandler context) {
@@ -31,7 +22,14 @@ public class ServesGIZ {
       @Override
       protected void doGet(HttpServletRequest req, HttpServletResponse resp)
           throws ServletException, IOException {
-        resp.getWriter().print(req.getRequestURI());
+        var way = Runner.getWay(req);
+        var authed = Runner.getAuthed(way, req);
+        if (authed == null) {
+          resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
+          return;
+        }
+        resp.setContentType("text/plain");
+        resp.getWriter().print(OrdersGIZ.list(way, authed));
       }
     }), "/list/giz");
   }
