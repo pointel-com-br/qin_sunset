@@ -220,6 +220,25 @@ public class Authed {
     return result;
   }
 
+  public boolean allowGIZ(String path) {
+    if (isMaster()) {
+      return true;
+    }
+    for (var access : this.user.access) {
+      if (access.giz != null && access.giz.path.equals(path)) {
+        return true;
+      }
+    }
+    if (this.group != null) {
+      for (var access : this.group.access) {
+        if (access.giz != null && access.giz.path.equals(path)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   public static boolean canAllowResource(Registier guarantor, Registier requester) {
     if (guarantor.registry != null && requester.registry != null
         && Objects.equals(guarantor.registry.name, requester.registry.name)) {
