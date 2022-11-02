@@ -15,14 +15,38 @@ public class Utils {
   public static String listFolders(File onDir) {
     var result = new StringBuilder();
     if (onDir.exists()) {
-      for (var file : onDir.listFiles()) {
-        if (file.isDirectory()) {
-          result.append(file.getName());
+      for (var inside : onDir.listFiles()) {
+        if (inside.isDirectory()) {
+          result.append(inside.getName());
           result.append("\n");
         }
       }
     }
     return result.toString();
+  }
+
+  public static String listFilesWithExtension(File onDir, String extension) {
+    var result = new StringBuilder();
+    listFilesWithExtension(result, onDir.getAbsolutePath().length(), onDir, extension.toLowerCase());
+    return result.toString();
+  }
+
+  private static void listFilesWithExtension(StringBuilder making, int rootSize, File onDir, String extension) {
+    if (onDir.exists()) {
+      for (var inside : onDir.listFiles()) {
+        if (!inside.isDirectory()) {
+          if (inside.getName().toLowerCase().endsWith(extension)) {
+            making.append(inside.getAbsolutePath().substring(rootSize));
+            making.append("\n");
+          }
+        }
+      }
+      for (var inside : onDir.listFiles()) {
+        if (inside.isDirectory()) {
+          listFilesWithExtension(making, rootSize, new File(onDir, inside.getName()), extension);
+        }
+      }
+    }
   }
 
   public static File resolveFile(String path, String parentIfRelative) {
