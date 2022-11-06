@@ -20,7 +20,6 @@ public class Setup {
   public Boolean servesCMD;
   public Boolean servesBAS;
   public Boolean servesREG;
-  public Boolean servesSQL;
   public Boolean servesGIZ;
 
   public Map<String, String> params;
@@ -75,9 +74,6 @@ public class Setup {
     }
     if (this.servesREG == null) {
       this.servesREG = false;
-    }
-    if (this.servesSQL == null) {
-      this.servesSQL = false;
     }
     if (this.servesGIZ == null) {
       this.servesGIZ = false;

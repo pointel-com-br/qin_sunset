@@ -22,7 +22,6 @@ import br.net.pin.qin_sunset.hook.ServesDIR;
 import br.net.pin.qin_sunset.hook.ServesGIZ;
 import br.net.pin.qin_sunset.hook.ServesPUB;
 import br.net.pin.qin_sunset.hook.ServesREG;
-import br.net.pin.qin_sunset.hook.ServesSQL;
 
 public class Service {
 
@@ -74,9 +73,6 @@ public class Service {
     if (this.runny.air.setup.servesBAS && this.runny.air.setup.servesREG) {
       this.serves_reg();
     }
-    if (this.runny.air.setup.servesBAS && this.runny.air.setup.servesSQL) {
-      this.serves_sql();
-    }
     if (this.runny.air.setup.servesGIZ) {
       this.serves_giz();
     }
@@ -122,11 +118,6 @@ public class Service {
   private void serves_reg() {
     this.runny.logInfo("Serving REG...");
     ServesREG.init(this.context);
-  }
-
-  private void serves_sql() {
-    this.runny.logInfo("Serving SQL...");
-    ServesSQL.init(this.context);
   }
 
   private void serves_giz() {

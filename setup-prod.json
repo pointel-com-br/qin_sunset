@@ -9,7 +9,6 @@
   "servesCMD": true,
   "servesBAS": true,
   "servesREG": true,
-  "servesSQL": true,
   "servesGIZ": true,
   "params": {
     "ALWAYS_ORDER_BY_IF_HAS": "ordem,nome,codigo"
