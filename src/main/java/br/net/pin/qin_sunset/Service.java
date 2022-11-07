@@ -12,7 +12,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
-import br.net.pin.qin_sunset.data.Way;
+import br.net.pin.qin_sunset.core.Way;
 import br.net.pin.qin_sunset.hook.ServerAuth;
 import br.net.pin.qin_sunset.hook.ServerUtils;
 import br.net.pin.qin_sunset.hook.ServesAPP;

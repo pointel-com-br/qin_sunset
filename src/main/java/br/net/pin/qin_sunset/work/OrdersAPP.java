@@ -6,8 +6,8 @@ import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
 
-import br.net.pin.qin_sunset.data.Authed;
-import br.net.pin.qin_sunset.data.Way;
+import br.net.pin.qin_sunset.core.Authed;
+import br.net.pin.qin_sunset.core.Way;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class OrdersAPP {

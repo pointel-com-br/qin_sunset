@@ -1,4 +1,4 @@
-package br.net.pin.qin_sunset.data;
+package br.net.pin.qin_sunset.core;
 
 public class Air {
   public final Setup setup;

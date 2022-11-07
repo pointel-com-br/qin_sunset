@@ -9,12 +9,12 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
-import br.net.pin.qin_sunset.data.Air;
-import br.net.pin.qin_sunset.data.Bases;
-import br.net.pin.qin_sunset.data.Groups;
-import br.net.pin.qin_sunset.data.Setup;
-import br.net.pin.qin_sunset.data.Users;
-import br.net.pin.qin_sunset.data.Way;
+import br.net.pin.qin_sunset.core.Air;
+import br.net.pin.qin_sunset.core.Bases;
+import br.net.pin.qin_sunset.core.Groups;
+import br.net.pin.qin_sunset.core.Setup;
+import br.net.pin.qin_sunset.core.Users;
+import br.net.pin.qin_sunset.core.Way;
 
 public class QinSunset {
 

@@ -1,4 +1,4 @@
-package br.net.pin.qin_sunset.data;
+package br.net.pin.qin_sunset.core;
 
 import java.sql.Connection;
 import java.util.Map;

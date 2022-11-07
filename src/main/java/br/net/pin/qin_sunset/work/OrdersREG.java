@@ -2,9 +2,9 @@ package br.net.pin.qin_sunset.work;
 
 import java.io.StringWriter;
 
-import br.net.pin.qin_sunset.data.Allow;
-import br.net.pin.qin_sunset.data.Authed;
-import br.net.pin.qin_sunset.data.Way;
+import br.net.pin.qin_sunset.core.Allow;
+import br.net.pin.qin_sunset.core.Authed;
+import br.net.pin.qin_sunset.core.Way;
 import br.net.pin.qin_sunwiz.data.Delete;
 import br.net.pin.qin_sunwiz.data.Insert;
 import br.net.pin.qin_sunwiz.data.Registier;

@@ -1,8 +1,8 @@
 package br.net.pin.qin_sunset.work;
 
-import br.net.pin.qin_sunset.data.Authed;
-import br.net.pin.qin_sunset.data.Group;
-import br.net.pin.qin_sunset.data.Way;
+import br.net.pin.qin_sunset.core.Authed;
+import br.net.pin.qin_sunset.core.Group;
+import br.net.pin.qin_sunset.core.Way;
 import br.net.pin.qin_sunset.swap.Logged;
 import br.net.pin.qin_sunset.swap.TryAuth;
 import jakarta.servlet.http.HttpServletRequest;

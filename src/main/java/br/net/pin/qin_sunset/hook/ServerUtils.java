@@ -7,7 +7,7 @@ import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-import br.net.pin.qin_sunset.data.Setup;
+import br.net.pin.qin_sunset.core.Setup;
 import br.net.pin.qin_sunset.swap.AskIssued;
 import br.net.pin.qin_sunset.work.OrdersUtils;
 import br.net.pin.qin_sunset.work.Runner;

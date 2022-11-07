@@ -3,9 +3,9 @@ package br.net.pin.qin_sunset.work;
 import java.io.File;
 import java.io.StringWriter;
 
-import br.net.pin.qin_sunset.data.Authed;
-import br.net.pin.qin_sunset.data.Issued;
-import br.net.pin.qin_sunset.data.Way;
+import br.net.pin.qin_sunset.core.Authed;
+import br.net.pin.qin_sunset.core.Issued;
+import br.net.pin.qin_sunset.core.Way;
 import br.net.pin.qin_sunset.swap.Execute;
 
 public class OrdersGIZ {

@@ -1,7 +1,7 @@
 package br.net.pin.qin_sunset.work;
 
-import br.net.pin.qin_sunset.data.Authed;
-import br.net.pin.qin_sunset.data.Way;
+import br.net.pin.qin_sunset.core.Authed;
+import br.net.pin.qin_sunset.core.Way;
 
 public class OrdersBAS {
   public static String list(Way way, Authed forAuthed) {
