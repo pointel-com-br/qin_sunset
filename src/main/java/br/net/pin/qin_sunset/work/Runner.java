@@ -25,7 +25,7 @@ public class Runner {
             }
           }
         }
-        var authed = new Authed(user, group);
+        var authed = new Authed(user, group, way);
         way.authedMap.addAuthed(token, authed);
         return new Logged(token, authed.getLang());
       }

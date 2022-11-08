@@ -16,10 +16,10 @@ public class Authed {
   private final IssuedMap issuedMap;
   private final List<Allow> access;
 
-  public Authed(User user, Group group) {
+  public Authed(User user, Group group, Way way) {
     this.user = user;
     this.group = group;
-    this.gizMap = new GizMap();
+    this.gizMap = new GizMap(way);
     this.issuedMap = new IssuedMap();
     this.access = new ArrayList<>();
     this.initAccess();
