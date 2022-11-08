@@ -25,6 +25,18 @@ public class Helped implements Closeable {
     this.helper = helper;
   }
 
+  public int update(String sql, Object... params) throws Exception {
+    if (params != null && params.length > 0) {
+      var statement = this.link.prepareStatement(sql);
+      for (int i = 0; i < params.length; i++) {
+        statement.setObject(i + 1, params[i]);
+      }
+      return statement.executeUpdate();
+    } else {
+      return this.link.createStatement().executeUpdate(sql);
+    }
+  }
+
   @Override
   public void close() throws IOException {
     try {
