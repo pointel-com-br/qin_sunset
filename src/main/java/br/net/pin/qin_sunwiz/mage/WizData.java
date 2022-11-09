@@ -3,6 +3,7 @@ package br.net.pin.qin_sunwiz.mage;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -285,5 +286,11 @@ public class WizData {
       return (Blob) data;
     }
     throw new RuntimeException("Could not convert to Blob from class: " + data.getClass().getCanonicalName());
+  }
+
+  public static void setParams(PreparedStatement statement, Object[] params) throws Exception {
+    for (int i = 0; i < params.length; i++) {
+      statement.setObject(i + 1, params[i]);
+    }    
   }
 }
