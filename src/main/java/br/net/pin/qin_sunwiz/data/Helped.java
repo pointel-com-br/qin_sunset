@@ -30,6 +30,16 @@ public class Helped implements Closeable {
     this.helper = helper;
   }
 
+  public boolean execute(String sql, Object... params) throws Exception {
+    if (params != null && params.length > 0) {
+      var statement = this.link.prepareStatement(sql);
+      WizData.setParams(statement, params);
+      return statement.execute();
+    } else {
+      return this.link.createStatement().execute(sql);
+    }
+  }
+
   public int update(String sql, Object... params) throws Exception {
     if (params != null && params.length > 0) {
       var statement = this.link.prepareStatement(sql);
