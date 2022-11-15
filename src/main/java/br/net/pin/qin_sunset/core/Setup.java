@@ -7,6 +7,7 @@ import java.util.Map;
 import com.google.gson.Gson;
 
 public class Setup {
+  public Boolean serverDebug;
   public Boolean serverVerbose;
   public Boolean serverArchive;
   public String serverName;
@@ -35,6 +36,9 @@ public class Setup {
   public Integer storeMaxTotal;
 
   public void fixDefaults() {
+    if (this.serverDebug == null) {
+      this.serverDebug = false;
+    }
     if (this.serverVerbose == null) {
       this.serverVerbose = false;
     }

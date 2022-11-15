@@ -67,6 +67,8 @@ public class QinSunset {
     var result = new Options();
     result.addOption(Option.builder("?").longOpt("help")
         .desc("Print usage information.").build());
+    result.addOption(Option.builder("e").longOpt("debug")
+        .desc("Should we call debug functions?").build());
     result.addOption(Option.builder("v").longOpt("verbose")
         .desc("Should we print verbose messages?").build());
     result.addOption(Option.builder("k").longOpt("archive")
@@ -99,6 +101,9 @@ public class QinSunset {
   }
 
   public static void setFromCmd(CommandLine command, Setup setup) {
+    if (command.hasOption('e')) {
+      setup.serverDebug = true;
+    }
     if (command.hasOption('v')) {
       setup.serverVerbose = true;
     }
