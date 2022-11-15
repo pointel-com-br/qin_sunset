@@ -16,7 +16,7 @@ public class GizMap extends HashMap<String, Script> {
   }
 
   public Script getScript(String exec) throws Exception {
-    if (this.containsKey(exec)) {
+    if (!this.way.air.setup.serverDebug && this.containsKey(exec)) {
       return this.get(exec);
     }
     var binding = new Binding();
