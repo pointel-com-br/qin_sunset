@@ -59,7 +59,9 @@ public class Storage {
     if (stored == null) {
       throw new Exception("Base " + onBase + " not found");
     }
-    return new Helped(stored.source.getConnection(), stored.helper);
+    var connection = stored.source.getConnection();
+    connection.setAutoCommit(true);
+    return new Helped(connection, stored.helper);
   }
 
   private static class Stored {

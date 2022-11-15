@@ -30,6 +30,20 @@ public class Helped implements Closeable {
     this.helper = helper;
   }
 
+  public void begin() throws Exception {
+    this.link.setAutoCommit(false);
+  }
+
+  public void commit() throws Exception {
+    this.link.commit();
+    this.link.setAutoCommit(true);
+  }
+
+  public void rollback() throws Exception {
+    this.link.rollback();
+    this.link.setAutoCommit(true);
+  }
+
   public boolean execute(String sql, Object... params) throws Exception {
     if (params != null && params.length > 0) {
       var statement = this.link.prepareStatement(sql);
