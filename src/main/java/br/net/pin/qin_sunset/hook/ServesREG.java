@@ -176,7 +176,7 @@ public class ServesREG {
             var always_order_by_name = always_order_by_parts[0].trim();
             var always_order_by_desc = false;
             if (always_order_by_parts.length > 1) {
-              if (always_order_by_parts[0].trim().toUpperCase() == "desc") {
+              if (always_order_by_parts[1].trim().toLowerCase().equals("desc")) {
                 always_order_by_desc = true;
               }
             }
