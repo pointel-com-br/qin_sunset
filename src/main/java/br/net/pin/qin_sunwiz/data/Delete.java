@@ -7,15 +7,13 @@ import com.google.gson.Gson;
 public class Delete implements Fixable {
   public Registier registier;
   public List<Filter> filters;
-  public Integer limit;
 
   public Delete() {
   }
 
-  public Delete(Registier registier, List<Filter> filters, Integer limit) {
+  public Delete(Registier registier, List<Filter> filters) {
     this.registier = registier;
     this.filters = filters;
-    this.limit = limit;
   }
 
   @Override

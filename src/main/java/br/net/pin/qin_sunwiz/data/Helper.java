@@ -400,16 +400,17 @@ public abstract class Helper {
 
   public int delete(Connection link, Delete delete, Strain strain) throws Exception {
     var builder = new StringBuilder("DELETE FROM ");
-    builder.append(delete.registier.registry.getCatalogSchemaName());
+    var dataSource = delete.registier.registry.getCatalogSchemaName();
+    builder.append(dataSource);
     builder.append(" WHERE ");
     builder.append(this.formClauses(delete.filters, null, null));
     if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
       builder.append(" AND ");
-      builder.append(strain.restrict);
-    }
-    if (delete.limit != null) {
-      builder.append(" LIMIT ");
-      builder.append(delete.limit);
+      var restricted = strain.restrict;
+      if (restricted.contains("${dataSource}")) {
+        restricted = restricted.replace("${dataSource}", dataSource);
+      }
+      builder.append(restricted);
     }
     var build = builder.toString();
     System.out.println("DELETE: " + build);
