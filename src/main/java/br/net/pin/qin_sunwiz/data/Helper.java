@@ -273,10 +273,11 @@ public abstract class Helper {
     var rst = link.createStatement()
         .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM " + insert.registier.registry.name + " WHERE "
             + insert.toGetID.filter.name + " = '" + insert.toGetID.filter.data.toString() + "'");
-    String last;
+    String last = null;
     if (rst.next()) {
       last = rst.getString(1);
-    } else {
+    }
+    if (last == null || last.isEmpty()) {
       last = WizChars.fill("", '0', formatSize);
     }
     String next = WizChars.getNext(last, true);
@@ -288,10 +289,11 @@ public abstract class Helper {
     var rst = link.createStatement()
         .executeQuery("SELECT MAX(" + insert.toGetID.name + ") FROM " + insert.registier.registry.name + " WHERE "
             + insert.toGetID.filter.name + " = '" + insert.toGetID.filter.data.toString() + "'");
-    String last;
+    String last = null;
     if (rst.next()) {
       last = rst.getString(1);
-    } else {
+    }
+    if (last == null || last.isEmpty()) {
       last = WizChars.fill("", '0', formatSize);
     }
     String next = WizChars.getNext(last, false);
@@ -302,10 +304,11 @@ public abstract class Helper {
   public String getIDNS(Connection link, Insert insert, int formatSize) throws Exception {
     String sequence = getIDSequence(link, insert);
     var rst = link.createStatement().executeQuery("SELECT nextval('" + sequence + "')");
-    Long nextVal;
+    Long nextVal = null;
     if (rst.next()) {
       nextVal = rst.getLong(1);
-    } else {
+    }
+    if (nextVal == null) {
       nextVal = 1l;
     }
     var next = nextVal.toString();
@@ -317,10 +320,11 @@ public abstract class Helper {
   public String getIDCS(Connection link, Insert insert, int formatSize) throws Exception {
     String sequence = getIDSequence(link, insert);
     var rst = link.createStatement().executeQuery("SELECT nextval('" + sequence + "')");
-    Long nextVal;
+    Long nextVal = null;
     if (rst.next()) {
       nextVal = rst.getLong(1);
-    } else {
+    }
+    if (nextVal == null) {
       nextVal = 1l;
     }
     var next = Base36.fromBase10(nextVal);
