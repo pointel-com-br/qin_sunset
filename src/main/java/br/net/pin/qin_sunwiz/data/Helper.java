@@ -278,7 +278,7 @@ public abstract class Helper {
       last = rst.getString(1);
     }
     if (last == null || last.isEmpty()) {
-      last = WizChars.fill("", '0', formatSize);
+      last = WizChars.fillAtStart("", '0', formatSize);
     }
     String next = WizChars.getNext(last, true);
     putID(insert, next);
@@ -294,7 +294,7 @@ public abstract class Helper {
       last = rst.getString(1);
     }
     if (last == null || last.isEmpty()) {
-      last = WizChars.fill("", '0', formatSize);
+      last = WizChars.fillAtStart("", '0', formatSize);
     }
     String next = WizChars.getNext(last, false);
     putID(insert, next);
@@ -312,7 +312,7 @@ public abstract class Helper {
       nextVal = 1l;
     }
     var next = nextVal.toString();
-    next = WizChars.fill(next, '0', formatSize - next.length());
+    next = WizChars.fillAtStart(next, '0', formatSize);
     putID(insert, next);
     return next;
   }
@@ -328,7 +328,7 @@ public abstract class Helper {
       nextVal = 1l;
     }
     var next = Base36.fromBase10(nextVal);
-    next = WizChars.fill(next, '0', formatSize - next.length());
+    next = WizChars.fillAtStart(next, '0', formatSize);
     putID(insert, next);
     return next;
   }
