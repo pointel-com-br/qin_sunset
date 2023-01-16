@@ -85,12 +85,8 @@ public class Allow {
         this.reg.delete = this.reg.delete != null ? this.reg.delete : false;
       }
     }
-    if (this.giz != null) {
-      if (this.giz.path == null || this.giz.path.isEmpty()) {
-        this.giz = null;
-      } else {
-        this.giz.path = new File(this.giz.path).getAbsolutePath();
-      }
+    if (this.giz != null && this.giz.path.isEmpty()) {
+      this.giz = null;
     }
   }
 
