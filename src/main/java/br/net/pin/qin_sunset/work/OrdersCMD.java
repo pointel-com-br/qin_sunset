@@ -32,15 +32,11 @@ public class OrdersCMD {
   public static Issued run(Execute execution) throws Exception {
     var issued = new Issued();
     var builder = new ProcessBuilder();
-    if (execution.exec.toLowerCase().endsWith(".jar")) {
-      builder.command().add("java");
-      builder.command().add("-jar");
-    }
     builder.command().add(execution.exec);
     if (execution.args != null) {
       builder.command().addAll(execution.args);
     }
-    builder.redirectErrorStream(true);
+    builder.redirectErrorStream(false);
     var process = builder.start();
     if (execution.inputs != null) {
       new Thread() {
@@ -55,7 +51,7 @@ public class OrdersCMD {
               writer.flush();
             }
           } catch (Exception e) {
-            issued.addLine("Exception on put Input: " + e.getMessage());
+            issued.addErrLine("Exception on put Input: " + e.getMessage());
           }
         };
       }.start();
@@ -66,16 +62,33 @@ public class OrdersCMD {
         try {
           String line;
           while ((line = reader.readLine()) != null) {
-            issued.addLine(line);
+            issued.addOutLine(line);
           }
         } catch (Exception e) {
-          issued.addLine("Exception on get Output: " + e.getMessage());
+          issued.addErrLine("Exception on get Output: " + e.getMessage());
         }
+      };
+    }.start();
+    new Thread() {
+      public void run() {
+        var reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
         try {
-          var exitCode = process.waitFor();
-          issued.setResultCoded(exitCode);
+          String line;
+          while ((line = reader.readLine()) != null) {
+            issued.addErrLine(line);
+          }
         } catch (Exception e) {
-          issued.addLine("Exception on get Code: " + e.getMessage());
+          issued.addErrLine("Exception on get Error: " + e.getMessage());
+        }
+      };
+    }.start();
+    new Thread() {
+      public void run() {
+        try {
+          var resultCode = process.waitFor();
+          issued.setResultCode(resultCode);
+        } catch (Exception e) {
+          issued.addErrLine("Exception on get Result Code: " + e.getMessage());
         } finally {
           issued.setDone();
         }

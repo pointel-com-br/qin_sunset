@@ -5,10 +5,16 @@ import com.google.gson.Gson;
 public class AskIssued {
   public String token;
   public Boolean askCreatedAt;
-  public Boolean askResultLines;
-  public Integer askResultLinesFrom;
-  public Boolean askResultCoded;
+  public Boolean askOutLines;
+  public Integer askOutLinesFrom;
+  public Boolean askOutLinesSize;
+  public Boolean askErrLines;
+  public Integer askErrLinesFrom;
+  public Boolean askErrLinesSize;
+  public Boolean askResultCode;
   public Boolean askIsDone;
+  public Boolean askHasOut;
+  public Boolean askHasErr;
   public Boolean askFinishedAt;
 
   @Override

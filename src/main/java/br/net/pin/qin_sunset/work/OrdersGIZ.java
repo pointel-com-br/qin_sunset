@@ -1,10 +1,11 @@
 package br.net.pin.qin_sunset.work;
 
 import java.io.File;
-import java.io.StringWriter;
 
 import br.net.pin.qin_sunset.core.Authed;
 import br.net.pin.qin_sunset.core.Issued;
+import br.net.pin.qin_sunset.core.IssuedWriter;
+import br.net.pin.qin_sunset.core.IssuedWriter.Destiny;
 import br.net.pin.qin_sunset.core.Way;
 import br.net.pin.qin_sunset.swap.Execute;
 
@@ -37,18 +38,19 @@ public class OrdersGIZ {
           try {
             var binding = script.getBinding();
             binding.setVariable("args", execution.args);
-            var out = new StringWriter();
+            var out = new IssuedWriter(issued, Destiny.OUT);
+            var err = new IssuedWriter(issued, Destiny.ERR);
             binding.setProperty("out", out);
+            binding.setProperty("err", err);
             var result = script.run();
-            issued.addLine(out.toString());
-            if (result instanceof Integer exitCode) {
-              issued.setResultCoded(exitCode);
+            if (result instanceof Integer resultCode) {
+              issued.setResultCode(resultCode);
             } else {
-              issued.setResultCoded(0);
+              issued.setResultCode(0);
             }
           } catch (Exception e) {
-            issued.addLine(e.getMessage());
-            issued.setResultCoded(-1);
+            issued.addErrLine(e.getMessage());
+            issued.setResultCode(-1);
           } finally {
             issued.setDone();
           }

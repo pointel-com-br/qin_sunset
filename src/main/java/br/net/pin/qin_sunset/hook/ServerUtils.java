@@ -123,7 +123,7 @@ public class ServerUtils {
         }
         try {
           var results = OrdersUtils.askIssued(issued, question);
-          resp.setContentType("text/plain");
+          resp.setContentType("application/json");
           resp.getWriter().print(results);
         } catch (Exception e) {
           throw new ServletException(e);
