@@ -13,6 +13,10 @@ import br.net.pin.qin_sunwiz.mage.WizChars;
 import br.net.pin.qin_sunwiz.mage.WizData;
 
 public abstract class Helper {
+
+  public static Helper instance = new Helper() {
+  };
+
   public List<Registry> getHeads(Connection link) throws Exception {
     var meta = link.getMetaData();
     var set = meta.getTables(null, null, "%", new String[] { "TABLE" });
@@ -664,6 +668,4 @@ public abstract class Helper {
     return error.getMessage().contains("unique constraint");
   }
 
-  public static Helper instance = new Helper() {
-  };
 }
