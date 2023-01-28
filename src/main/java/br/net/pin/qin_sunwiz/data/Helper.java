@@ -108,10 +108,7 @@ public abstract class Helper {
     }
     if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
       builder.append(!select.hasFilters() ? " WHERE " : " AND ");
-      var restricted = strain.restrict;
-      if (restricted.contains("${dataSource}")) {
-        restricted = restricted.replace("${dataSource}", dataSource);
-      }
+      var restricted = replaceVariables(strain.restrict, dataSource);
       builder.append(restricted);
     }
     if (select.orders != null && !select.orders.isEmpty()) {
@@ -235,6 +232,103 @@ public abstract class Helper {
     return ID;
   }
 
+  public int update(Connection link, Update update, Strain strain) throws Exception {
+    var builder = new StringBuilder("UPDATE ");
+    var dataSource = update.registier.registry.getCatalogSchemaName();
+    builder.append(dataSource);
+    builder.append(" SET ");
+    for (var i = 0; i < update.valueds.size(); i++) {
+      if (i > 0) {
+        builder.append(", ");
+      }
+      builder.append(update.valueds.get(i).name);
+      builder.append(" = ");
+      if (update.valueds.get(i).data == null) {
+        builder.append("NULL");
+      } else {
+        builder.append("?");
+      }
+    }
+    if (strain != null && strain.modify != null && !strain.modify.isEmpty()) {
+      builder.append(", ");
+      builder.append(strain.modify);
+    }
+    builder.append(" WHERE ");
+    builder.append(this.formClauses(update.filters, null, null));
+    if (update.limit != null) {
+      builder.append(" LIMIT ");
+      builder.append(update.limit);
+    }
+    if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
+      builder.append(" AND ");
+      var restricted = replaceVariables(strain.restrict, dataSource);
+      builder.append(restricted);
+    }
+    var build = builder.toString();
+    System.out.println("UPDATE: " + build);
+    var prepared = link.prepareStatement(build);
+    var param_index = 1;
+    for (var valued : update.valueds) {
+      if (valued != null) {
+        this.setParameter(prepared, param_index, valued);
+        param_index++;
+      }
+    }
+    if (update.filters != null && !update.filters.isEmpty()) {
+      for (var clause : update.filters) {
+        if (clause.valued != null) {
+          this.setParameter(prepared, param_index, clause.valued);
+          param_index++;
+        }
+      }
+    }
+    return prepared.executeUpdate();
+  }
+
+  
+
+  public int delete(Connection link, Delete delete, Strain strain) throws Exception {
+    var builder = new StringBuilder("DELETE FROM ");
+    var dataSource = delete.registier.registry.getCatalogSchemaName();
+    builder.append(dataSource);
+    builder.append(" WHERE ");
+    builder.append(this.formClauses(delete.filters, null, null));
+    if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
+      builder.append(" AND ");
+      var restricted = replaceVariables(strain.restrict, dataSource);
+      builder.append(restricted);
+    }
+    var build = builder.toString();
+    System.out.println("DELETE: " + build);
+    var prepared = link.prepareStatement(build);
+    var param_index = 1;
+    if (delete.filters != null && !delete.filters.isEmpty()) {
+      for (var clause : delete.filters) {
+        if (clause.valued.data != null) {
+          this.setParameter(prepared, param_index, clause.valued);
+          param_index++;
+        }
+      }
+    }
+    return prepared.executeUpdate();
+  }
+
+  public String replaceVariables(String onSource, String dataSource) {
+    if (onSource == null) {
+      return null;
+    }
+    return onSource.replace("${dataSource}", dataSource);
+  }
+
+  public void putID(Insert insert, Object next) {
+    for (var valued : insert.valueds) {
+      if (Objects.equals(insert.toGetID.name, valued.name)) {
+        valued.data = next;
+        break;
+      }
+    }
+  }
+
   public String getID(Connection link, Insert insert) throws Exception {
     if (insert.toGetID == null || insert.toGetID.name == null || insert.toGetID.name.isEmpty()) {
       return "";
@@ -344,95 +438,6 @@ public abstract class Helper {
       return rst.getString(1);
     }
     return null;
-  }
-
-  public void putID(Insert insert, Object next) {
-    for (var valued : insert.valueds) {
-      if (Objects.equals(insert.toGetID.name, valued.name)) {
-        valued.data = next;
-        break;
-      }
-    }
-  }
-
-  public int update(Connection link, Update update, Strain strain) throws Exception {
-    var builder = new StringBuilder("UPDATE ");
-    builder.append(update.registier.registry.getCatalogSchemaName());
-    builder.append(" SET ");
-    for (var i = 0; i < update.valueds.size(); i++) {
-      if (i > 0) {
-        builder.append(", ");
-      }
-      builder.append(update.valueds.get(i).name);
-      builder.append(" = ");
-      if (update.valueds.get(i).data == null) {
-        builder.append("NULL");
-      } else {
-        builder.append("?");
-      }
-    }
-    if (strain != null && strain.modify != null && !strain.modify.isEmpty()) {
-      builder.append(", ");
-      builder.append(strain.modify);
-    }
-    builder.append(" WHERE ");
-    builder.append(this.formClauses(update.filters, null, null));
-    if (update.limit != null) {
-      builder.append(" LIMIT ");
-      builder.append(update.limit);
-    }
-    if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
-      builder.append(" AND ");
-      builder.append(strain.restrict);
-    }
-    var build = builder.toString();
-    System.out.println("UPDATE: " + build);
-    var prepared = link.prepareStatement(build);
-    var param_index = 1;
-    for (var valued : update.valueds) {
-      if (valued != null) {
-        this.setParameter(prepared, param_index, valued);
-        param_index++;
-      }
-    }
-    if (update.filters != null && !update.filters.isEmpty()) {
-      for (var clause : update.filters) {
-        if (clause.valued != null) {
-          this.setParameter(prepared, param_index, clause.valued);
-          param_index++;
-        }
-      }
-    }
-    return prepared.executeUpdate();
-  }
-
-  public int delete(Connection link, Delete delete, Strain strain) throws Exception {
-    var builder = new StringBuilder("DELETE FROM ");
-    var dataSource = delete.registier.registry.getCatalogSchemaName();
-    builder.append(dataSource);
-    builder.append(" WHERE ");
-    builder.append(this.formClauses(delete.filters, null, null));
-    if (strain != null && strain.restrict != null && !strain.restrict.isEmpty()) {
-      builder.append(" AND ");
-      var restricted = strain.restrict;
-      if (restricted.contains("${dataSource}")) {
-        restricted = restricted.replace("${dataSource}", dataSource);
-      }
-      builder.append(restricted);
-    }
-    var build = builder.toString();
-    System.out.println("DELETE: " + build);
-    var prepared = link.prepareStatement(build);
-    var param_index = 1;
-    if (delete.filters != null && !delete.filters.isEmpty()) {
-      for (var clause : delete.filters) {
-        if (clause.valued.data != null) {
-          this.setParameter(prepared, param_index, clause.valued);
-          param_index++;
-        }
-      }
-    }
-    return prepared.executeUpdate();
   }
 
   public String formNature(Field field) {
