@@ -232,7 +232,7 @@ public abstract class Helper {
     return ID;
   }
 
-  public int update(Connection link, Update update, Strain strain) throws Exception {
+  public Integer update(Connection link, Update update, Strain strain) throws Exception {
     var builder = new StringBuilder("UPDATE ");
     var dataSource = update.registier.registry.getCatalogSchemaName();
     builder.append(dataSource);
@@ -285,9 +285,7 @@ public abstract class Helper {
     return prepared.executeUpdate();
   }
 
-  
-
-  public int delete(Connection link, Delete delete, Strain strain) throws Exception {
+  public Integer delete(Connection link, Delete delete, Strain strain) throws Exception {
     var builder = new StringBuilder("DELETE FROM ");
     var dataSource = delete.registier.registry.getCatalogSchemaName();
     builder.append(dataSource);

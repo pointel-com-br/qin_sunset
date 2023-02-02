@@ -89,7 +89,7 @@ public class OrdersREG {
     try {
       var helped = way.stores.getHelp(update.registier.base);
       var result = helped.helper.update(helped.link, update, strain);
-      return "Updated: " + result;
+      return result.toString();
     } catch (Exception e) {
       throw new ServletException(e);
     }
@@ -99,7 +99,7 @@ public class OrdersREG {
     try {
       var helped = way.stores.getHelp(delete.registier.base);
       var result = helped.helper.delete(helped.link, delete, strain);
-      return "Deleted: " + result;
+      return result.toString();
     } catch (Exception e) {
       throw new ServletException(e);
     }
