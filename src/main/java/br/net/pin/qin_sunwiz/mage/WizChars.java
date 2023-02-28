@@ -1,5 +1,8 @@
 package br.net.pin.qin_sunwiz.mage;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class WizChars {
 
   public static boolean isEmpty(String theString) {
@@ -260,6 +263,75 @@ public class WizChars {
       }
       result = result.substring(0, envPos) + envValue + result.substring(envPosEnd + 1);
       envPos = result.indexOf("${env:", envPos + 1);
+    }
+    return result;
+  }
+
+  public static Map<String, String> getAssigned(String inChars) {
+    var result = new HashMap<String, String>();
+    if (WizChars.isEmpty(inChars)) {
+      return result;
+    }
+    var openQuotes = false;
+    var foundEquals = false;
+    var key = new StringBuilder();
+    var val = new StringBuilder();
+    for (var i = 0; i < inChars.length(); i++) {
+      var actual = inChars.charAt(i);
+      var next = i < inChars.length() - 1 ? inChars.charAt(i + 1) : ' ';
+      if (openQuotes) {
+        if (actual == '"') {
+          openQuotes = false;
+        } else {
+          if (actual == '\\') {
+            if (next == '\\' || next == '"' || next == '=' || next == ';') {
+              actual = next;
+              i++;
+            } else if (next == 'n') {
+              actual = '\n';
+              i++;
+            } else if (next == 'r') {
+              actual = '\r';
+              i++;
+            } else if (next == 't') {
+              actual = '\t';
+              i++;
+            } else if (next == 'f') {
+              actual = '\f';
+              i++;
+            } else if (next == 'b') {
+              actual = '\b';
+              i++;
+            }
+          }
+          if (foundEquals) {
+            val.append(actual);
+          } else {
+            key.append(actual);
+          }
+        }
+      } else {
+        if (actual == '"') {
+          openQuotes = true;
+        } if (actual == '=') {
+          foundEquals = true;
+        } else if (actual == ';') {
+          if (foundEquals) {
+            result.put(key.toString(), val.toString());
+            foundEquals = false;
+          } else {
+            result.put(key.toString(), "");
+          }
+          key = new StringBuilder();
+          val = new StringBuilder();
+        } else {
+          if (foundEquals) {
+            val.append(actual);
+          } else {
+            key.append(actual);
+          }
+        }
+      }
     }
     return result;
   }

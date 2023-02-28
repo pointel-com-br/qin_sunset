@@ -2,8 +2,12 @@ package br.net.pin.qin_sunwiz.data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Map;
 
 import com.google.gson.Gson;
+
+import br.net.pin.qin_sunwiz.mage.WizChars;
+import br.net.pin.qin_sunwiz.mage.WizInt;
 
 public class DataLink implements Fixable {
   public String name;
@@ -143,5 +147,18 @@ public class DataLink implements Fixable {
 
   public static DataLink fromString(String json) {
     return new Gson().fromJson(json, DataLink.class);
+  }
+
+  public static DataLink fromAssigned(String inChars) {
+    DataLink result = new DataLink();
+    Map<String, String> assigned = WizChars.getAssigned(inChars);
+    result.name = assigned.get("name");
+    result.base = DataBase.fromString(assigned.get("base"));
+    result.path = assigned.get("path");
+    result.port = WizInt.fromString(assigned.get("port"));
+    result.data = assigned.get("data");
+    result.user = assigned.get("user");
+    result.pass = assigned.get("pass");
+    return result;
   }
 }

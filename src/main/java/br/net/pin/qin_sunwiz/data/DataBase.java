@@ -73,4 +73,16 @@ public enum DataBase {
     }
     return Helper.instance;
   }
+
+  public static DataBase fromString(String string) {
+    if (string == null || string.isBlank()) {
+      return null;
+    }
+    for (DataBase dataBase : DataBase.values()) {
+      if (dataBase.name().equalsIgnoreCase(string)) {
+        return dataBase;
+      }
+    }
+    return null;
+  }
 }
