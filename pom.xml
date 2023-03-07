@@ -23,12 +23,12 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
-      <version>11.0.9</version>
+      <version>11.0.14</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
-      <version>11.0.9</version>
+      <version>11.0.14</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>
@@ -58,7 +58,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.4.0</version>
+      <version>42.5.4</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
