@@ -7,9 +7,11 @@ public class AskIssued {
   public Boolean askCreatedAt;
   public Boolean askOutLines;
   public Integer askOutLinesFrom;
+  public Integer askOutLinesUntil;
   public Boolean askOutLinesSize;
   public Boolean askErrLines;
   public Integer askErrLinesFrom;
+  public Integer askErrLinesUntil;
   public Boolean askErrLinesSize;
   public Boolean askResultCode;
   public Boolean askIsDone;

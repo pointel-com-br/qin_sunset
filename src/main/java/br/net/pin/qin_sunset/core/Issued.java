@@ -44,15 +44,24 @@ public class Issued {
     }
   }
 
-  public String getOutLinesFrom(int index) {
+  public String[] getOutLinesFrom(Integer from) {
+    return this.getOutLinesFrom(from, null);
+  }
+
+  public String[] getOutLinesFrom(Integer from, Integer until) {
     try {
       this.outLock.readLock().lock();
-      var result = new StringBuilder();
-      for (int i = index; i < this.outLines.size(); i++) {
-        result.append(this.outLines.get(i));
-        result.append("\n");
+      if (until == null) {
+        until = this.outLines.size();
       }
-      return result.toString();
+      var length = Math.min(this.outLines.size(), until) - from;
+      var result = new String[length];
+      var index = 0;
+      for (int i = from; i < length + from; i++) {
+        result[index] = this.outLines.get(i);
+        index++;
+      }
+      return result;
     } finally {
       this.outLock.readLock().unlock();
     }
@@ -86,15 +95,24 @@ public class Issued {
     }
   }
 
-  public String getErrLinesFrom(int index) {
+  public String[] getErrLinesFrom(Integer from) {
+    return this.getErrLinesFrom(from, null);
+  }
+
+  public String[] getErrLinesFrom(Integer from, Integer until) {
     try {
       this.errLock.readLock().lock();
-      var result = new StringBuilder();
-      for (int i = index; i < this.errLines.size(); i++) {
-        result.append(this.errLines.get(i));
-        result.append("\n");
+      if (until == null) {
+        until = this.errLines.size();
       }
-      return result.toString();
+      var length = Math.min(this.errLines.size(), until) - from;
+      var result = new String[length];
+      var index = 0;
+      for (int i = from; i < length + from; i++) {
+        result[index] = this.errLines.get(i);
+        index++;
+      }
+      return result;
     } finally {
       this.errLock.readLock().unlock();
     }

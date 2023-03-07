@@ -5,10 +5,10 @@ import com.google.gson.Gson;
 public class AskIssuedAnswer {
   public Long createdAt;
   public String outLines;
-  public String outLinesFrom;
+  public String[] outLinesFrom;
   public Integer outLinesSize;
   public String errLines;
-  public String errLinesFrom;
+  public String[] errLinesFrom;
   public Integer errLinesSize;
   public Integer resultCode;
   public Boolean isDone;
