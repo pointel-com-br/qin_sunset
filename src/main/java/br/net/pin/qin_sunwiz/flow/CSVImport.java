@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import org.slf4j.LoggerFactory;
+
 import br.net.pin.qin_sunwiz.data.DataLink;
 import br.net.pin.qin_sunwiz.data.Field;
 import br.net.pin.qin_sunwiz.data.Insert;
@@ -15,39 +17,41 @@ import br.net.pin.qin_sunwiz.data.Table;
 import br.net.pin.qin_sunwiz.data.Valued;
 import br.net.pin.qin_sunwiz.mage.WizFile;
 
-public class CSVImport extends Thread {
-  private final Pace progress;
+public class CSVImport implements Runnable {
+  
   private final File origin;
   private final DataLink destiny;
+  private final Pace pace;
 
-  public CSVImport(File origin, DataLink destiny, Pace progress) {
-    super("ImportFromCSV");
+  public CSVImport(File origin, DataLink destiny) {
+    this(origin, destiny, null);
+  }
+    public CSVImport(File origin, DataLink destiny, Pace pace) {
     this.origin = origin;
     this.destiny = destiny;
-    this.progress = progress;
+    this.pace = pace != null ? pace : new Pace(LoggerFactory.getLogger(CSVImport.class));
   }
 
-  @Override
   public void run() {
     try {
-      if (!this.origin.exists()) {
+      if (!origin.exists()) {
         throw new Exception("The origin must exist.");
       }
-      try (var connection = this.destiny.connect()) {
-        this.progress.log("Connected to destiny database.");
-        if (this.origin.isFile()) {
-          this.importCSVFile(this.origin, connection);
+      try (var connection = destiny.connect()) {
+        pace.info("Connected to destiny database.");
+        if (origin.isFile()) {
+          importCSVFile(origin, connection);
         } else {
-          for (File inside : this.origin.listFiles()) {
-            if (this.isCSVFile(inside)) {
-              this.importCSVFile(inside, connection);
+          for (File inside : origin.listFiles()) {
+            if (isCSVFile(inside)) {
+              importCSVFile(inside, connection);
             }
           }
         }
       }
-      this.progress.log("Finished to import from CSV.");
+      pace.info("Finished to import from CSV.");
     } catch (Exception e) {
-      this.progress.log(e);
+      pace.error("Could not import", e);
     }
   }
 
@@ -56,16 +60,17 @@ public class CSVImport extends Thread {
   }
 
   private void importCSVFile(File csvFile, Connection connection) throws Exception {
-    this.progress.log("Importing CSV File: " + csvFile.getName());
+    pace.waitIfPausedAndThrowIfStopped();
+    pace.info("Importing CSV File: " + csvFile.getName());
     var tableName = WizFile.getBaseName(csvFile.getName());
     var tableFile = new File(csvFile.getParent(), tableName + ".tab");
     Table table;
     if (tableFile.exists()) {
-      this.progress.log("Loading table metadata from file.");
+      pace.info("Loading table metadata from file.");
       table = Table.fromString(Files.readString(tableFile.toPath()));
-      this.destiny.base.helper.create(connection, table, true);
+      destiny.base.helper.create(connection, table, true);
     } else {
-      this.progress.log("Loading table metadata from connection.");
+      pace.info("Loading table metadata from connection.");
       String schema = null;
       var name = tableName;
       if (name.contains(".")) {
@@ -75,13 +80,14 @@ public class CSVImport extends Thread {
       table = new Registry(null, schema, name).getTable(connection);
     }
     try (var reader = new CSVFile(csvFile, CSVFile.Mode.READ)) {
-      this.progress.log("CSV File: " + csvFile.getName() + " opened.");
+      pace.info("CSV File: " + csvFile.getName() + " opened.");
       var firstLine = true;
       String[] line;
       var lineCount = 0l;
       while ((line = reader.readLine()) != null) {
+        pace.waitIfPausedAndThrowIfStopped();
         lineCount++;
-        this.progress.log("Processing line  " + lineCount + " of file: " + csvFile
+        pace.info("Processing line  " + lineCount + " of file: " + csvFile
             .getName());
         var values = new Object[line.length];
         for (var i = 0; i < values.length; i++) {
@@ -90,12 +96,12 @@ public class CSVImport extends Thread {
           } else {
             var field = table.fields.get(i);
             values[i] = field.getValueFrom(line[i]);
-            this.fixValuesForSQLTypes(values, i, field);
+            fixValuesForSQLTypes(values, i, field);
           }
         }
         var fields = new ArrayList<Field>();
         if (firstLine) {
-          this.progress.log("Making sure the table fields matchs on the first line.");
+          pace.info("Making sure the table fields matchs on the first line.");
           firstLine = false;
           for (Object value : values) {
             for (Field field : table.fields) {
@@ -109,7 +115,7 @@ public class CSVImport extends Thread {
             table.fields = fields;
           }
         } else {
-          this.progress.log("Inserting line  " + lineCount + " of file: " + csvFile
+          pace.info("Inserting line  " + lineCount + " of file: " + csvFile
               .getName());
           var valueds = new ArrayList<Valued>();
           for (var i = 0; i < values.length; i++) {
@@ -117,7 +123,8 @@ public class CSVImport extends Thread {
             var valued = new Valued(field.name, field.nature, values[i]);
             valueds.add(valued);
           }
-          this.destiny.base.helper.insert(connection, new Insert(new Registier(table.registry), valueds), null);
+          pace.waitIfPausedAndThrowIfStopped();
+          destiny.base.helper.insert(connection, new Insert(new Registier(table.registry), valueds), null);
         }
       }
     }
