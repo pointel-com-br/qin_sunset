@@ -34,7 +34,9 @@ public class OrdersGIZ {
     var script = gizMap.getScript(execution.exec);
     var joinErrs = execution.joinErrs != null ? execution.joinErrs : false;
     var issued = new Issued(joinErrs);
-    var issuedPace = new Pace(new IssuedLogger(issued));
+    var logger = new IssuedLogger(issued, execution.logLevel);
+    var pace = new Pace(logger);
+    issued.setPace(pace);
     new Thread() {
       @Override
       public void run() {
@@ -46,7 +48,7 @@ public class OrdersGIZ {
             var err = new IssuedWriter(issued, Destiny.ERR);
             binding.setProperty("out", out);
             binding.setProperty("err", err);
-            binding.setProperty("pace", issuedPace);
+            binding.setProperty("pace", pace);
             var result = script.run();
             if (result instanceof Integer resultCode) {
               issued.setResultCode(resultCode);

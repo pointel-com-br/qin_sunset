@@ -8,8 +8,10 @@ import java.io.OutputStreamWriter;
 
 import br.net.pin.qin_sunset.core.Authed;
 import br.net.pin.qin_sunset.core.Issued;
+import br.net.pin.qin_sunset.core.IssuedLogger;
 import br.net.pin.qin_sunset.core.Way;
 import br.net.pin.qin_sunset.swap.Execute;
+import br.net.pin.qin_sunwiz.flow.Pace;
 
 public class OrdersCMD {
   public static String list(Way way, Authed forAuthed) {
@@ -32,6 +34,9 @@ public class OrdersCMD {
   public static Issued run(Execute execution) throws Exception {
     var joinErrs = execution.joinErrs != null ? execution.joinErrs : false;
     var issued = new Issued(joinErrs);
+    var logger = new IssuedLogger(issued, execution.logLevel);
+    var pace = new Pace(logger);
+    issued.setPace(pace);
     var builder = new ProcessBuilder();
     builder.command().add(execution.exec);
     if (execution.args != null) {

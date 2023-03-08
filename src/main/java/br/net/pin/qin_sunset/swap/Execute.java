@@ -9,6 +9,7 @@ public class Execute {
   public List<String> args;
   public List<String> inputs;
   public Boolean joinErrs;
+  public Integer logLevel;
 
   @Override
   public String toString() {
