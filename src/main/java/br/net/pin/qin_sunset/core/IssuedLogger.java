@@ -13,19 +13,27 @@ public class IssuedLogger extends MarkerIgnoringBase {
   private static final int LEVEL_TRACE = 4;
 
   private final Issued issued;
-  private final int level;
+  private volatile Integer level;
 
   public IssuedLogger(Issued issued) {
     this(issued, LEVEL_INFO);
   }
 
-  public IssuedLogger(Issued issued, int level) {
+  public IssuedLogger(Issued issued, Integer level) {
     this.issued = issued;
+    this.level = level != null ? level : LEVEL_INFO;
+  }
+
+  public Integer getLevel() {
+    return level;
+  }
+
+  public void setLevel(Integer level) {
     this.level = level;
   }
 
   private boolean isLevelEnabled(int level) {
-    return this.level >= level;
+    return this.level != null ? this.level >= level : false;
   }
 
   private String log(String level, String msg) {
