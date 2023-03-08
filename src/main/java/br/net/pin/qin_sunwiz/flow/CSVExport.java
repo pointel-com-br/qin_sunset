@@ -49,7 +49,7 @@ public class CSVExport implements Runnable {
         pace.info("Getting tables...");
         var heads = origin.base.helper.getHeads(originConn);
         for (Registry head : heads) {
-          pace.info("Processing: " + head);
+          pace.info("Processing: %s...", head);
           var table = head.getTable(originConn);
           try (var writer = new PrintWriter(new FileOutputStream(new File(
               destiny,
@@ -67,7 +67,7 @@ public class CSVExport implements Runnable {
             var recordCount = 0L;
             while (rstOrigin.next()) {
               recordCount++;
-              pace.info("Writing record " + recordCount + " of " + head.name);
+              pace.debug("Writing record " + recordCount + " of " + head.name);
               for (var i = 0; i < table.fields.size(); i++) {
                 row[i] = table.fields.get(i).formatValue(rstOrigin.getObject(i + 1));
               }
