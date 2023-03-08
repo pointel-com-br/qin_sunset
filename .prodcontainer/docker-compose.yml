@@ -7,6 +7,7 @@ services:
     image: pointeldevs/run_java
     volumes:
       - ${QIN_ROOT}/Prod:/root/Prod
+      - ${QIN_ROOT}/Pool:/root/Pool
     environment:
       - QIN_ROOT=/root
     ports:

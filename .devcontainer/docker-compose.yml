@@ -8,6 +8,7 @@ services:
     volumes:
       - ${QIN_ROOT}/Work:/root
       - ${QIN_ROOT}/Code:/root/Code
+      - ${QIN_ROOT}/Pool:/root/Pool
       - ${QIN_ROOT}/Prod:/root/Prod
       - ${QIN_ROOT}/Test:/root/Test
     environment:
