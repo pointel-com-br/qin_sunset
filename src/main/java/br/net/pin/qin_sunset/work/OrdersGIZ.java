@@ -30,7 +30,8 @@ public class OrdersGIZ {
   public static Issued run(Authed forAuthed, Execute execution) throws Exception {
     var gizMap = forAuthed.getGizMap();
     var script = gizMap.getScript(execution.exec);
-    var issued = new Issued();
+    var joinErrs = execution.joinErrs != null ? execution.joinErrs : false;
+    var issued = new Issued(joinErrs);
     new Thread() {
       @Override
       public void run() {

@@ -30,7 +30,8 @@ public class OrdersCMD {
   }
 
   public static Issued run(Execute execution) throws Exception {
-    var issued = new Issued();
+    var joinErrs = execution.joinErrs != null ? execution.joinErrs : false;
+    var issued = new Issued(joinErrs);
     var builder = new ProcessBuilder();
     builder.command().add(execution.exec);
     if (execution.args != null) {

@@ -8,6 +8,7 @@ public class Execute {
   public String exec;
   public List<String> args;
   public List<String> inputs;
+  public Boolean joinErrs;
 
   @Override
   public String toString() {

@@ -9,8 +9,9 @@ public class Issued {
 
   private final Long createdAt;
   private final List<String> outLines;
-  private final List<String> errLines;
   private final ReadWriteLock outLock;
+  private final boolean joinErrs;
+  private final List<String> errLines;
   private final ReadWriteLock errLock;
   private volatile Integer resultCode;
   private volatile Boolean isDone;
@@ -18,12 +19,17 @@ public class Issued {
   private volatile Boolean hasErr;
   private volatile Long finishedAt;
 
-  public Issued() {
+  // public Issued() {
+  //   this(false);
+  // }
+
+  public Issued(boolean joinErrs) {
     this.createdAt = System.nanoTime();
     this.outLines = new ArrayList<>();
     this.outLock = new ReentrantReadWriteLock();
-    this.errLines = new ArrayList<>();
-    this.errLock = new ReentrantReadWriteLock();
+    this.joinErrs = joinErrs;
+    this.errLines = !joinErrs ? new ArrayList<>() : null;
+    this.errLock = !joinErrs ? new ReentrantReadWriteLock() : null;
     this.resultCode = null;
     this.isDone = false;
     this.hasOut = false;
@@ -87,6 +93,9 @@ public class Issued {
   }
 
   public String getErrLines() {
+    if (this.joinErrs) {
+      return null;
+    }
     try {
       this.errLock.readLock().lock();
       return String.join("\n", this.errLines);
@@ -96,10 +105,16 @@ public class Issued {
   }
 
   public String[] getErrLinesFrom(Integer from) {
+    if (this.joinErrs) {
+      return null;
+    }
     return this.getErrLinesFrom(from, null);
   }
 
   public String[] getErrLinesFrom(Integer from, Integer until) {
+    if (this.joinErrs) {
+      return null;
+    }
     try {
       this.errLock.readLock().lock();
       if (until == null) {
@@ -119,6 +134,9 @@ public class Issued {
   }
 
   public int getErrLinesSize() {
+    if (this.joinErrs) {
+      return 0;
+    }
     try {
       this.errLock.readLock().lock();
       return this.errLines.size();
@@ -128,6 +146,10 @@ public class Issued {
   }
 
   public void addErrLine(String err) {
+    if (this.joinErrs) {
+      addOutLine(err);
+      return;
+    }
     try {
       this.errLock.writeLock().lock();
       this.errLines.add(err);
