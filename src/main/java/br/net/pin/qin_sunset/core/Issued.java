@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import br.net.pin.qin_sunwiz.flow.Pace;
+
 public class Issued {
 
   private final Long createdAt;
@@ -18,6 +20,7 @@ public class Issued {
   private volatile Boolean hasOut;
   private volatile Boolean hasErr;
   private volatile Long finishedAt;
+  private volatile Pace pace;
 
   public Issued() {
     this(false);
@@ -186,5 +189,13 @@ public class Issued {
 
   public Long getFinishedAt() {
     return this.finishedAt;
+  }
+
+  public Pace getPace() {
+    return pace;
+  }
+
+  public void setPace(Pace pace) {
+    this.pace = pace;
   }
 }
