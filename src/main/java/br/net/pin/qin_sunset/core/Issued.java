@@ -19,9 +19,9 @@ public class Issued {
   private volatile Boolean hasErr;
   private volatile Long finishedAt;
 
-  // public Issued() {
-  //   this(false);
-  // }
+  public Issued() {
+    this(false);
+  }
 
   public Issued(boolean joinErrs) {
     this.createdAt = System.nanoTime();
