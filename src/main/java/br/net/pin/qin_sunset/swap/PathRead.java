@@ -3,17 +3,17 @@ package br.net.pin.qin_sunset.swap;
 import com.google.gson.Gson;
 
 public class PathRead {
-  public String path;
-  public Boolean base64;
-  public Integer rangeStart;
-  public Integer rangeLength;
+    public String path;
+    public Boolean base64;
+    public Integer rangeStart;
+    public Integer rangeLength;
 
-  @Override
-  public String toString() {
-    return new Gson().toJson(this);
-  }
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
+    }
 
-  public static PathRead fromString(String json) {
-    return new Gson().fromJson(json, PathRead.class);
-  }
+    public static PathRead fromString(String json) {
+        return new Gson().fromJson(json, PathRead.class);
+    }
 }

@@ -1,19 +1,19 @@
 package br.net.pin.qin_sunwiz.data;
 
 public enum Nature {
-  BIT, BOOL, BYTE,
+    BIT, BOOL, BYTE,
 
-  TINY, SMALL, INT, LONG,
+    TINY, SMALL, INT, LONG,
 
-  SERIAL, BIG_SERIAL,
+    SERIAL, BIG_SERIAL,
 
-  FLOAT, REAL, DOUBLE,
+    FLOAT, REAL, DOUBLE,
 
-  NUMERIC, BIG_NUMERIC,
+    NUMERIC, BIG_NUMERIC,
 
-  CHAR, CHARS,
+    CHAR, CHARS,
 
-  DATE, TIME, DATE_TIME, TIMESTAMP,
+    DATE, TIME, DATE_TIME, TIMESTAMP,
 
-  BYTES, BLOB, TEXT
+    BYTES, BLOB, TEXT
 }

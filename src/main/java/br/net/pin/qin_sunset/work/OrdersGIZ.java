@@ -1,7 +1,6 @@
 package br.net.pin.qin_sunset.work;
 
 import java.io.File;
-
 import br.net.pin.qin_sunset.core.Authed;
 import br.net.pin.qin_sunset.core.Issued;
 import br.net.pin.qin_sunset.core.IssuedLogger;
@@ -12,58 +11,58 @@ import br.net.pin.qin_sunset.swap.Execute;
 import br.net.pin.qin_sunwiz.flow.Pace;
 
 public class OrdersGIZ {
-  public static String list(Way way, Authed forAuthed) {
-    var gizDir = new File(way.air.setup.serverFolder, "giz");
-    if (forAuthed.isMaster()) {
-      return Utils.listFilesWithExtension(gizDir, ".giz");
-    }
-    var result = new StringBuilder();
-    for (var access : forAuthed.getAccess()) {
-      if (access.giz != null) {
-        if (new File(gizDir, access.giz.path).exists()) {
-          result.append(access.giz.path);
-          result.append("\n");
+    public static String list(Way way, Authed forAuthed) {
+        var gizDir = new File(way.air.setup.serverFolder, "giz");
+        if (forAuthed.isMaster()) {
+            return Utils.listFilesWithExtension(gizDir, ".giz");
         }
-      }
-    }
-    return result.toString();
-  }
-
-  public static Issued run(Authed forAuthed, Execute execution) throws Exception {
-    var gizMap = forAuthed.getGizMap();
-    var script = gizMap.getScript(execution.exec);
-    var joinErrs = execution.joinErrs != null ? execution.joinErrs : false;
-    var issued = new Issued(joinErrs);
-    var logger = new IssuedLogger(issued, execution.logLevel);
-    var pace = new Pace(logger);
-    issued.setPace(pace);
-    new Thread() {
-      @Override
-      public void run() {
-        synchronized (script) {
-          try {
-            var binding = script.getBinding();
-            binding.setVariable("args", execution.args);
-            var out = new IssuedWriter(issued, Destiny.OUT);
-            var err = new IssuedWriter(issued, Destiny.ERR);
-            binding.setProperty("out", out);
-            binding.setProperty("err", err);
-            binding.setProperty("pace", pace);
-            var result = script.run();
-            if (result instanceof Integer resultCode) {
-              issued.setResultCode(resultCode);
-            } else {
-              issued.setResultCode(0);
+        var result = new StringBuilder();
+        for (var access : forAuthed.getAccess()) {
+            if (access.giz != null) {
+                if (new File(gizDir, access.giz.path).exists()) {
+                    result.append(access.giz.path);
+                    result.append("\n");
+                }
             }
-          } catch (Exception e) {
-            issued.addErrLine(e.getMessage());
-            issued.setResultCode(-1);
-          } finally {
-            issued.setDone();
-          }
         }
-      };
-    }.start();
-    return issued;
-  }
+        return result.toString();
+    }
+
+    public static Issued run(Authed forAuthed, Execute execution) throws Exception {
+        var gizMap = forAuthed.getGizMap();
+        var script = gizMap.getScript(execution.exec);
+        var joinErrs = execution.joinErrs != null ? execution.joinErrs : false;
+        var issued = new Issued(joinErrs);
+        var logger = new IssuedLogger(issued, execution.logLevel);
+        var pace = new Pace(logger);
+        issued.setPace(pace);
+        new Thread() {
+            @Override
+            public void run() {
+                synchronized (script) {
+                    try {
+                        var binding = script.getBinding();
+                        binding.setVariable("args", execution.args);
+                        var out = new IssuedWriter(issued, Destiny.OUT);
+                        var err = new IssuedWriter(issued, Destiny.ERR);
+                        binding.setProperty("out", out);
+                        binding.setProperty("err", err);
+                        binding.setProperty("pace", pace);
+                        var result = script.run();
+                        if (result instanceof Integer resultCode) {
+                            issued.setResultCode(resultCode);
+                        } else {
+                            issued.setResultCode(0);
+                        }
+                    } catch (Exception e) {
+                        issued.addErrLine(e.getMessage());
+                        issued.setResultCode(-1);
+                    } finally {
+                        issued.setDone();
+                    }
+                }
+            };
+        }.start();
+        return issued;
+    }
 }

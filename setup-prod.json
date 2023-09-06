@@ -1,17 +1,17 @@
 {
-  "serverDebug": false,
-  "serverVerbose": true,
-  "serverArchive": false,
-  "serverHost": "0.0.0.0",
-  "serverPort": 5488,
-  "servesPUB": true,
-  "servesAPP": true,
-  "servesDIR": true,
-  "servesCMD": true,
-  "servesBAS": true,
-  "servesREG": true,
-  "servesGIZ": true,
-  "params": {
-    "ALWAYS_ORDER_BY_IF_HAS": "ordem,codigo DESC"
-  }
+    "serverDebug": false,
+    "serverVerbose": true,
+    "serverArchive": false,
+    "serverHost": "0.0.0.0",
+    "serverPort": 5488,
+    "servesPUB": true,
+    "servesAPP": true,
+    "servesDIR": true,
+    "servesCMD": true,
+    "servesBAS": true,
+    "servesREG": true,
+    "servesGIZ": true,
+    "params": {
+        "ALWAYS_ORDER_BY_IF_HAS": "ordem,codigo DESC"
+    }
 }

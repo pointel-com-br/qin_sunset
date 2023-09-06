@@ -3,14 +3,14 @@ package br.net.pin.qin_sunset.swap;
 import com.google.gson.Gson;
 
 public class OnePath {
-  public String path;
+    public String path;
 
-  @Override
-  public String toString() {
-    return new Gson().toJson(this);
-  }
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
+    }
 
-  public static OnePath fromString(String json) {
-    return new Gson().fromJson(json, OnePath.class);
-  }
+    public static OnePath fromString(String json) {
+        return new Gson().fromJson(json, OnePath.class);
+    }
 }
